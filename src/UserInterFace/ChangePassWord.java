@@ -1,22 +1,22 @@
 package UserInterFace;
 
 import ConfigDB.ConnectDB;
+import Model.Account;
 import Service.AccountService;
 import Service.Impl.AccountServiceImpl;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ChangePassWord extends javax.swing.JFrame {
 
     private Connection conn = null;
-    private PreparedStatement pst = null;
-    private ResultSet rs = null;
     private final ConnectDB connectDB = new ConnectDB();
-    private AccountService accountService;
+    private final AccountService accountService;
 
     public ChangePassWord() {
         initComponents();
@@ -25,7 +25,7 @@ public class ChangePassWord extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         connection();
         accountService = new AccountServiceImpl();
-        loadComboBox();
+        loadComboBoxUsername();
         setDisabledData();
         lblStatus.setForeground(Color.red);
     }
@@ -53,34 +53,12 @@ public class ChangePassWord extends javax.swing.JFrame {
         conn = connectDB.getConnect();
     }
 
-    private void loadComboBox() {
-        String sql = "SELECT * FROM Accounts";
-        try {
-            pst = conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                this.cbxUserName.addItem(rs.getString("UserName").trim());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private void loadComboBoxUsername() {
+        List<Account> list = accountService.getListAccounts();
+        list.forEach((b) -> {
+            this.cbxUserName.addItem(b.getUsername().trim());
+        });
 
-    private boolean getAccountByUsernameAndPassword() {
-        boolean kq = false;
-        String sql = "SELECT * FROM Accounts WHERE UserName=? AND PassWord=?";
-        try {
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, (String) cbxUserName.getSelectedItem());
-            pst.setString(2, String.valueOf(this.currentPassword.getPassword()));
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return kq;
     }
 
     private boolean checkNull() {
@@ -324,7 +302,9 @@ public class ChangePassWord extends javax.swing.JFrame {
 
     private void btnOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOKMouseClicked
         if (checkNull()) {
-            if (getAccountByUsernameAndPassword()) {
+            String user = (String) cbxUserName.getSelectedItem();
+            String pass = String.valueOf(this.currentPassword.getPassword());
+            if (accountService.getAccountByUsernameAndPassword(user, pass)) {
                 if (String.valueOf(this.newPassword.getPassword()).equals(String.valueOf(this.rePassword.getPassword()))) {
                     String username = (String) cbxUserName.getSelectedItem();
                     accountService.changePassword(username, String.valueOf(this.newPassword.getPassword()));

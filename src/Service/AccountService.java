@@ -23,4 +23,6 @@ public interface AccountService {
     boolean findAccountByUsername(String username);
     
     void changePassword(String username, String password);
+    
+    boolean getAccountByUsernameAndPassword(String username, String password);
 }

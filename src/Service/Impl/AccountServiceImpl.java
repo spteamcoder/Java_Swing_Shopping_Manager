@@ -204,4 +204,44 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    @Override
+    public boolean getAccountByUsernameAndPassword(String username, String password) {
+        boolean kq = false;
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        String sql = "SELECT * FROM Accounts WHERE UserName=? AND PassWord=?";
+        ResultSet result = null;
+
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, username);
+            pst.setString(2, password);
+            result = pst.executeQuery();
+            if (result.next()) {
+                return true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException ignore) {
+                }
+            } else if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
+        return kq;
+    }
+
 }
