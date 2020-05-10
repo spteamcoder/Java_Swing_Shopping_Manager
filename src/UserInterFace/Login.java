@@ -3,7 +3,6 @@ package UserInterFace;
 import ConfigDB.ConnectDB;
 import java.awt.Color;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFrame;
@@ -29,7 +28,7 @@ public class Login extends javax.swing.JFrame {
         conn = connectDB.getConnect();
     }
 
-    private boolean CheckNull() {
+    private boolean checkNull() {
         boolean kq = true;
         if (this.userName.getText().length() == 0) {
             lblStatus.setText("Bạn chưa nhập tên đăng nhập!");
@@ -217,7 +216,7 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         String sql = "SELECT * FROM Accounts WHERE UserName=? and PassWord=?";
-        if (CheckNull()) {
+        if (checkNull()) {
             try {
                 pst = conn.prepareStatement(sql);
                 pst.setString(1, this.userName.getText());
@@ -226,7 +225,11 @@ public class Login extends javax.swing.JFrame {
                 if (rs.next()) {
                     Detail detail = new Detail(rs.getString("Username").trim(), rs.getString("FullName").trim());
                     if (rs.getString("Username").trim().toString().equals("Admin")) {
-                        Home home = new Home(detail);
+                        HomeAdmin home = new HomeAdmin(detail);
+                        this.setVisible(false);
+                        home.setVisible(true);
+                    } else if (rs.getString("Username").trim().toString().equals("Manager")) {
+                        HomeManager home = new HomeManager(detail);
                         this.setVisible(false);
                         home.setVisible(true);
                     } else {
@@ -250,22 +253,22 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnChangePassActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int lick = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
-        if (lick == JOptionPane.OK_OPTION) {
+        int isExisted = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
+        if (isExisted == JOptionPane.OK_OPTION) {
             System.exit(0);
         } else {
-            if (lick == JOptionPane.CANCEL_OPTION) {
+            if (isExisted == JOptionPane.CANCEL_OPTION) {
                 this.setVisible(true);
             }
         }
     }//GEN-LAST:event_formWindowClosing
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        int lick = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
-        if (lick == JOptionPane.OK_OPTION) {
+        int isExisted = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
+        if (isExisted == JOptionPane.OK_OPTION) {
             System.exit(0);
         } else {
-            if (lick == JOptionPane.CANCEL_OPTION) {
+            if (isExisted == JOptionPane.CANCEL_OPTION) {
                 this.setVisible(true);
             }
         }

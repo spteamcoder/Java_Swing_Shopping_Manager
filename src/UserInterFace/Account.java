@@ -15,16 +15,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class Account extends javax.swing.JFrame {
-
+    
     private Connection conn = null;
     private PreparedStatement pst = null;
     private ResultSet rs = null;
-
+    
     private Boolean isCheckedAdd = false, Change = false;
-    private final String sql = "SELECT * FROM Accounts";
+    private final String sql = "SELECT * FROM Accounts WHERE Username != 'Manager'";
     private final ConnectDB connectDB = new ConnectDB();
     private final Detail detail;
-
+    
     public Account(Detail d) {
         initComponents();
         setResizable(false);
@@ -37,7 +37,7 @@ public class Account extends javax.swing.JFrame {
         loadEmployees();
         lblStatus.setForeground(Color.red);
     }
-
+    
     private void loadEmployees() {
         String sql = "SELECT * FROM NhanVien";
         cbxEmployees.removeAllItems();
@@ -51,12 +51,12 @@ public class Account extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
-
+    
     private void connection() {
         conn = connectDB.getConnect();
-
+        
     }
-
+    
     private void loadData(String sql) {
         TableAccount.removeAll();
         try {
@@ -67,7 +67,9 @@ public class Account extends javax.swing.JFrame {
             while (rs.next()) {
                 Vector vector = new Vector();
                 vector.add(rs.getString("Username").trim());
-                vector.add(rs.getString("PassWord").trim());
+                int length = rs.getString("PassWord").length();
+                vector.add(repeat("*", length));
+//                vector.add(rs.getString("PassWord").trim());
                 vector.add(rs.getString("FullName").trim());
                 vector.add(new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("DateCreated")));
                 modle.addRow(vector);
@@ -77,7 +79,11 @@ public class Account extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
-
+    
+    public String repeat(String s, int count) {
+        return count > 0 ? s + repeat(s, --count) : "";
+    }
+    
     private void setEnabledData() {
         user.setEnabled(true);
         pass.setEnabled(true);
@@ -86,7 +92,7 @@ public class Account extends javax.swing.JFrame {
         btn.setEnabled(true);
         lblStatus.setText("Trạng Thái!");
     }
-
+    
     private void setDisabledData() {
         user.setEnabled(false);
         pass.setEnabled(false);
@@ -94,7 +100,7 @@ public class Account extends javax.swing.JFrame {
         cbxEmployees.setEnabled(false);
         date.setEnabled(false);
     }
-
+    
     private void refreshData() {
         cbxEmployees.removeAllItems();
         isCheckedAdd = false;
@@ -108,7 +114,7 @@ public class Account extends javax.swing.JFrame {
         this.btnSave.setEnabled(false);
         this.btnDelete.setEnabled(false);
     }
-
+    
     private void addAccount() {
         String sqlInsert = "INSERT INTO Accounts (UserName,PassWord,FullName,DateCreated) VALUES(?,?,?,?)";
         if (checkNull()) {
@@ -128,13 +134,13 @@ public class Account extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private void changeAccount() {
         int selectedRow = TableAccount.getSelectedRow();
         TableModel model = TableAccount.getModel();
-
+        
         String sqlUpdate = "UPDATE Accounts SET UserName=?,PassWord=?,FullName=?,DateCreated=? WHERE UserName='" + model.getValueAt(selectedRow, 0).toString().trim() + "'";
-
+        
         if (checkNull()) {
             try {
                 pst = conn.prepareStatement(sqlUpdate);
@@ -152,7 +158,7 @@ public class Account extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private boolean findAccountByUsername() {
         boolean kq = true;
         String sqlCheck = "SELECT * FROM Accounts";
@@ -169,7 +175,7 @@ public class Account extends javax.swing.JFrame {
         }
         return kq;
     }
-
+    
     private boolean checkNull() {
         boolean kq = true;
         if (this.user.getText().equals("")) {
@@ -186,7 +192,7 @@ public class Account extends javax.swing.JFrame {
         }
         return kq;
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -439,20 +445,20 @@ public class Account extends javax.swing.JFrame {
     private void TableAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableAccountMouseClicked
         int selectedRow = TableAccount.getSelectedRow();
         TableModel model = TableAccount.getModel();
-
+        
         cbxEmployees.removeAllItems();
-
+        
         user.setText(model.getValueAt(selectedRow, 0).toString());
         pass.setText(model.getValueAt(selectedRow, 1).toString());
         cbxEmployees.addItem(model.getValueAt(selectedRow, 2).toString());
         ((JTextField) date.getDateEditor().getUiComponent()).setText(model.getValueAt(selectedRow, 3).toString());
-
+        
         btnDelete.setEnabled(true);
         btnChange.setEnabled(true);
     }//GEN-LAST:event_TableAccountMouseClicked
 
     private void btnBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackMouseClicked
-        Home login = new Home(detail);
+        HomeAdmin login = new HomeAdmin(detail);
         this.setVisible(false);
         login.setVisible(true);
     }//GEN-LAST:event_btnBackMouseClicked
@@ -468,12 +474,12 @@ public class Account extends javax.swing.JFrame {
     private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
         int Click = TableAccount.getSelectedRow();
         TableModel model = TableAccount.getModel();
-
+        
         isCheckedAdd = false;
         Change = true;
         setEnabledData();
         loadEmployees();
-
+        
         if (model.getValueAt(Click, 0).toString().trim().equals("Admin")) {
             user.setEnabled(false);
         }
@@ -541,9 +547,9 @@ public class Account extends javax.swing.JFrame {
         this.setVisible(false);
         account.setVisible(true);
     }//GEN-LAST:event_btnActionPerformed
-
+    
     public static void main(String args[]) {
-
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -560,7 +566,7 @@ public class Account extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(OrderForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Detail detail = new Detail();

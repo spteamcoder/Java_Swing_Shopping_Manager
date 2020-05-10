@@ -805,7 +805,7 @@ public class Product extends javax.swing.JFrame {
 
     private void btnBackHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackHomeMouseClicked
         if (this.detail.getUser().toString().toString().equals("Admin")) {
-            Home home = new Home(detail);
+            HomeAdmin home = new HomeAdmin(detail);
             this.setVisible(false);
             home.setVisible(true);
         } else {

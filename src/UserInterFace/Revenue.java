@@ -358,7 +358,7 @@ public class Revenue extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnBackHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackHomeActionPerformed
-        Home login = new Home(detail);
+        HomeAdmin login = new HomeAdmin(detail);
         this.setVisible(false);
         login.setVisible(true);
     }//GEN-LAST:event_btnBackHomeActionPerformed

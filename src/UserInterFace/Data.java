@@ -108,7 +108,7 @@ public class Data extends javax.swing.JFrame {
     }
 
     private void backHome() {
-        Home home = new Home(detail);
+        HomeAdmin home = new HomeAdmin(detail);
         this.setVisible(false);
         home.setVisible(true);
     }

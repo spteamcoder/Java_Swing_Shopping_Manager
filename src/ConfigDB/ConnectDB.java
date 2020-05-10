@@ -16,14 +16,14 @@ import java.sql.SQLException;
 public class ConnectDB {
 
     public Connection getConnect() {
-        String dbURL = "jdbc:sqlserver://localhost:1433;databaseName=CuaHangDienTu?autoReconnect=true&useSSL=false";
+        String dbURL = "jdbc:sqlserver://localhost:1433;database=CuaHangDienTu";
         String username = "sa";
         String password = "123456";
         Connection conn = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(dbURL, username, password);
-            //System.out.println("Connect successfully!");
+            System.out.println("Connect successfully!");
         } catch (Exception ex) {
             System.out.println("Connect failure!");
             ex.printStackTrace();
