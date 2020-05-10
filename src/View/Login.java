@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import ConfigDB.ConnectDB;
 import java.awt.Color;
@@ -247,7 +247,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePassActionPerformed
-        ChangePassWord changePassWord = new ChangePassWord();
+        ChangePasswordView changePassWord = new ChangePasswordView();
         this.setVisible(false);
         changePassWord.setVisible(true);
     }//GEN-LAST:event_btnChangePassActionPerformed

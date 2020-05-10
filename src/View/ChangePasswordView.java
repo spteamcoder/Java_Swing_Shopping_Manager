@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import ConfigDB.ConnectDB;
 import Model.Account;
@@ -12,13 +12,13 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class ChangePassWord extends javax.swing.JFrame {
+public class ChangePasswordView extends javax.swing.JFrame {
 
     private Connection conn = null;
     private final ConnectDB connectDB = new ConnectDB();
     private final AccountService accountService;
 
-    public ChangePassWord() {
+    public ChangePasswordView() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
@@ -345,18 +345,18 @@ public class ChangePassWord extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangePassWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangePassWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangePassWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangePassWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChangePassWord().setVisible(true);
+                new ChangePasswordView().setVisible(true);
             }
         });
     }

@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import java.awt.Color;
 import java.awt.Dimension;

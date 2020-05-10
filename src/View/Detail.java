@@ -1,5 +1,5 @@
 
-package UserInterFace;
+package View;
 
 public class Detail {
     private String user;

@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import ConfigDB.ConnectDB;
 import java.awt.Color;
@@ -306,9 +306,9 @@ public class OrderForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txbPhone = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        cbxClassify = new javax.swing.JComboBox<>();
+        cbxClassify = new javax.swing.JComboBox<String>();
         jLabel7 = new javax.swing.JLabel();
-        cbxProduct = new javax.swing.JComboBox<>();
+        cbxProduct = new javax.swing.JComboBox<String>();
         jLabel9 = new javax.swing.JLabel();
         txbAmount = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -320,7 +320,7 @@ public class OrderForm extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         txbIntoMoney = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        cbxPaymentMethods = new javax.swing.JComboBox<>();
+        cbxPaymentMethods = new javax.swing.JComboBox<String>();
         btnProduct = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btnRefresh = new javax.swing.JButton();

@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import ConfigDB.ConnectDB;
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import ConfigDB.ConnectDB;
 import java.awt.Color;
@@ -285,9 +285,9 @@ public class EmployeesManagement extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txbCode = new javax.swing.JTextField();
-        cbxPosition = new javax.swing.JComboBox<>();
+        cbxPosition = new javax.swing.JComboBox<String>();
         txbName = new javax.swing.JTextField();
-        cbxSex = new javax.swing.JComboBox<>();
+        cbxSex = new javax.swing.JComboBox<String>();
         txbPhone = new javax.swing.JTextField();
         txbAddress = new javax.swing.JTextField();
         txbBirthday = new com.toedter.calendar.JDateChooser();
@@ -835,7 +835,7 @@ public class EmployeesManagement extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxPositionPopupMenuWillBecomeInvisible
 
     private void btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActionPerformed
-        Data data = new Data(detail);
+        DataView data = new DataView(detail);
         this.setVisible(false);
         data.setVisible(true);
     }//GEN-LAST:event_btnActionPerformed

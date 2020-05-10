@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import ConfigDB.ConnectDB;
 import java.awt.Color;
@@ -308,16 +308,16 @@ public class Product extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txbID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        cbxClassify = new javax.swing.JComboBox<>();
+        cbxClassify = new javax.swing.JComboBox<String>();
         btnClassify = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txbName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        cbxProducer = new javax.swing.JComboBox<>();
+        cbxProducer = new javax.swing.JComboBox<String>();
         btnNSX = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txbWarrantyPeriod = new javax.swing.JTextField();
-        cbxTime = new javax.swing.JComboBox<>();
+        cbxTime = new javax.swing.JComboBox<String>();
         jLabel6 = new javax.swing.JLabel();
         txbAmount = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -851,7 +851,7 @@ public class Product extends javax.swing.JFrame {
 
     private void btnClassifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClassifyActionPerformed
         if (this.detail.getUser().toString().toString().equals("Admin")) {
-            Data data = new Data(detail);
+            DataView data = new DataView(detail);
             this.setVisible(false);
             data.setVisible(true);
         }
@@ -859,7 +859,7 @@ public class Product extends javax.swing.JFrame {
 
     private void btnNSXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNSXActionPerformed
         if (this.detail.getUser().toString().toString().equals("Admin")) {
-            Data data = new Data(detail);
+            DataView data = new DataView(detail);
             this.setVisible(false);
             data.setVisible(true);
         }

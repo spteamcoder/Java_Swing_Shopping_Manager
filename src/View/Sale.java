@@ -1,4 +1,4 @@
-package UserInterFace;
+package View;
 
 import ConfigDB.ConnectDB;
 import java.awt.Color;
@@ -359,8 +359,8 @@ class Sale extends javax.swing.JFrame implements Runnable {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        cbxClassify = new javax.swing.JComboBox<>();
-        cbxProduct = new javax.swing.JComboBox<>();
+        cbxClassify = new javax.swing.JComboBox<String>();
+        cbxProduct = new javax.swing.JComboBox<String>();
         txbIntoMoney = new javax.swing.JTextField();
         txbAmount = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
