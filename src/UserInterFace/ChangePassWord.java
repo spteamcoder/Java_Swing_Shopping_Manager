@@ -1,6 +1,8 @@
 package UserInterFace;
 
 import ConfigDB.ConnectDB;
+import Service.AccountService;
+import Service.Impl.AccountServiceImpl;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ public class ChangePassWord extends javax.swing.JFrame {
     private PreparedStatement pst = null;
     private ResultSet rs = null;
     private final ConnectDB connectDB = new ConnectDB();
+    private AccountService accountService;
 
     public ChangePassWord() {
         initComponents();
@@ -21,6 +24,7 @@ public class ChangePassWord extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         connection();
+        accountService = new AccountServiceImpl();
         loadComboBox();
         setDisabledData();
         lblStatus.setForeground(Color.red);
@@ -322,16 +326,10 @@ public class ChangePassWord extends javax.swing.JFrame {
         if (checkNull()) {
             if (getAccountByUsernameAndPassword()) {
                 if (String.valueOf(this.newPassword.getPassword()).equals(String.valueOf(this.rePassword.getPassword()))) {
-                    String sqlChange = "UPDATE Accounts SET PassWord=? WHERE UserName=N'" + (String) cbxUserName.getSelectedItem() + "'";
-                    try {
-                        pst = conn.prepareStatement(sqlChange);
-                        pst.setString(1, String.valueOf(this.newPassword.getPassword()));
-                        pst.executeUpdate();
-                        setDisabledData();
-                        lblStatus.setText("Đổi mật khẩu thành công!");
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+                    String username = (String) cbxUserName.getSelectedItem();
+                    accountService.changePassword(username, String.valueOf(this.newPassword.getPassword()));
+                    setDisabledData();
+                    lblStatus.setText("Đổi mật khẩu thành công!");
                 } else {
                     lblStatus.setText("Nhập lại mật khẩu mới không chính xác!");
                 }
@@ -347,11 +345,11 @@ public class ChangePassWord extends javax.swing.JFrame {
     }//GEN-LAST:event_cbxUserNamePopupMenuWillBecomeInvisible
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int lick = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
-        if (lick == JOptionPane.OK_OPTION) {
+        int isClose = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
+        if (isClose == JOptionPane.OK_OPTION) {
             System.exit(0);
         } else {
-            if (lick == JOptionPane.CANCEL_OPTION) {
+            if (isClose == JOptionPane.CANCEL_OPTION) {
                 this.setVisible(true);
             }
         }

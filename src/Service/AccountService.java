@@ -21,4 +21,6 @@ public interface AccountService {
     void editAccout(String oldUsername, Account account );
     
     boolean findAccountByUsername(String username);
+    
+    void changePassword(String username, String password);
 }

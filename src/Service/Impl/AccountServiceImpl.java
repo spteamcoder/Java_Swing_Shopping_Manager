@@ -177,4 +177,31 @@ public class AccountServiceImpl implements AccountService {
         return kq;
     }
 
+    @Override
+    public void changePassword(String username, String password) {
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        String sqlChange = "UPDATE Accounts SET PassWord=? WHERE UserName=N'" + username + "'";
+        try {
+            pst = conn.prepareStatement(sqlChange);
+            pst.setString(1, password);
+            pst.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
+    }
+
 }
