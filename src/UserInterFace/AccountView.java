@@ -69,19 +69,6 @@ public class AccountView extends javax.swing.JFrame {
         try {
             String[] arr = {"Tên Đăng Nhập", "Mật Khẩu", "Tên Nhân Viên", "Ngày Tạo"};
             DefaultTableModel dtm = new DefaultTableModel(arr, 0);
-//            pst = conn.prepareStatement(sql);
-//            rs = pst.executeQuery();
-//            while (rs.next()) {
-//                Vector vector = new Vector();
-//                vector.add(rs.getString("Username").trim());
-//                int length = rs.getString("PassWord").length();
-//                vector.add(repeat("*", length));
-////                vector.add(rs.getString("PassWord").trim());
-//                vector.add(rs.getString("FullName").trim());
-//                vector.add(new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("DateCreated")));
-//                dtm.addRow(vector);
-//            }
-
             list.forEach((b) -> {
                 Vector vector = new Vector();
                 vector.add(b.getUsername());
@@ -90,7 +77,6 @@ public class AccountView extends javax.swing.JFrame {
                 vector.add(b.getFullname());
                 vector.add(new SimpleDateFormat("dd/MM/yyyy").format(b.getDateCreated()));
                 dtm.addRow(vector);
-
             });
             TableAccount.setModel(dtm);
         } catch (Exception ex) {
@@ -134,64 +120,37 @@ public class AccountView extends javax.swing.JFrame {
     }
 
     private void addAccount() {
-        String sqlInsert = "INSERT INTO Accounts (UserName,PassWord,FullName,DateCreated) VALUES(?,?,?,?)";
         if (checkNull()) {
-            try {
-                pst = conn.prepareStatement(sqlInsert);
-                pst.setString(1, this.user.getText());
-                pst.setString(2, this.pass.getText());
-                pst.setString(3, this.cbxEmployees.getSelectedItem().toString());
-                pst.setDate(4, new java.sql.Date(date.getDate().getTime()));
-                pst.executeUpdate();
-                loadData();
-                setDisabledData();
-                refreshData();
-                lblStatus.setText("Thêm tài khoản thành công!");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            Account newAccount = new Account();
+            newAccount.setUsername(this.user.getText());
+            newAccount.setPassword(this.pass.getText());
+            newAccount.setFullname(this.cbxEmployees.getSelectedItem().toString());
+            newAccount.setDateCreated(new java.sql.Date(date.getDate().getTime()));
+            accountService.addAccount(newAccount);
+            loadData();
+            setDisabledData();
+            refreshData();
+            lblStatus.setText("Thêm tài khoản thành công!");
         }
     }
 
     private void changeAccount() {
         int selectedRow = TableAccount.getSelectedRow();
         TableModel model = TableAccount.getModel();
-
-        String sqlUpdate = "UPDATE Accounts SET UserName=?,PassWord=?,FullName=?,DateCreated=? WHERE UserName='" + model.getValueAt(selectedRow, 0).toString().trim() + "'";
+        String oldUsername = model.getValueAt(selectedRow, 0).toString().trim();
 
         if (checkNull()) {
-            try {
-                pst = conn.prepareStatement(sqlUpdate);
-                pst.setString(1, this.user.getText());
-                pst.setString(2, this.pass.getText());
-                pst.setString(3, this.cbxEmployees.getSelectedItem().toString());
-                pst.setDate(4, new java.sql.Date(date.getDate().getTime()));
-                pst.executeUpdate();
-                setDisabledData();
-                refreshData();
-                lblStatus.setText("Lưu thay đổi thành công!");
-                loadData();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            Account newAccount = new Account();
+            newAccount.setUsername(this.user.getText());
+            newAccount.setPassword(this.pass.getText());
+            newAccount.setFullname(this.cbxEmployees.getSelectedItem().toString());
+            newAccount.setDateCreated(new java.sql.Date(date.getDate().getTime()));
+            accountService.editAccout(oldUsername, newAccount);
+            setDisabledData();
+            refreshData();
+            lblStatus.setText("Lưu thay đổi thành công!");
+            loadData();
         }
-    }
-
-    private boolean findAccountByUsername() {
-        boolean kq = true;
-        String sqlCheck = "SELECT * FROM Accounts";
-        try {
-            pst = conn.prepareStatement(sqlCheck);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                if (this.user.getText().equals(rs.getString("Username").toString().trim())) {
-                    return false;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return kq;
     }
 
     private boolean checkNull() {
@@ -515,7 +474,7 @@ public class AccountView extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (isCheckedAdd == true) {
-            if (findAccountByUsername()) {
+            if (accountService.findAccountByUsername(this.user.getText())) {
                 addAccount();
             } else {
                 lblStatus.setText("Thêm tài khoản thất bại, Tên đăng nhập đã tồn tại!");

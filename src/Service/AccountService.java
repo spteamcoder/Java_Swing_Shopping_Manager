@@ -15,4 +15,10 @@ import java.util.List;
  */
 public interface AccountService {
     List<Account> getListAccounts();  
+    
+    void addAccount(Account account);
+    
+    void editAccout(String oldUsername, Account account );
+    
+    boolean findAccountByUsername(String username);
 }
