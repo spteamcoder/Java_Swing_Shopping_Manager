@@ -2,8 +2,11 @@ package View;
 
 import ConfigDB.ConnectDB;
 import Model.Position;
+import Model.Producer;
 import Service.Impl.PositionServiceImpl;
+import Service.Impl.ProducerServiceImpl;
 import Service.PositionService;
+import Service.ProducerService;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +29,7 @@ public class DataView extends javax.swing.JFrame {
     private Detail detail;
     private boolean isCheckedAdd = false, isCheckedChange = false;
     private PositionService positionService;
-    String sql2 = "SELECT * FROM Producer";
+    private ProducerService producerService;
     String sql3 = "SELECT * FROM Classify";
 
     public DataView(Detail d) {
@@ -34,12 +37,13 @@ public class DataView extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         positionService = new PositionServiceImpl();
+        producerService = new ProducerServiceImpl();
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         detail = new Detail(d);
         lblStatus.setForeground(Color.red);
         connection();
         loadPosition();
-        loadProducer(sql2);
+        loadProducer();
         loadClassify(sql3);
         setDisabledPosition();
         setDisabledClassify();
@@ -68,26 +72,24 @@ public class DataView extends javax.swing.JFrame {
 
     }
 
-    private void loadProducer(String sql) {
+    private void loadProducer() {
         tableProducer.removeAll();
-        try {
-            String[] arr = {"mã NSX", "Nhà Sản Xuất", "Địa Chỉ", "Số Điện Thoại", "Email"};
-            DefaultTableModel modle = new DefaultTableModel(arr, 0);
-            pst = conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                Vector vector = new Vector();
-                vector.add(rs.getString("ID").trim());
-                vector.add(rs.getString("ProducerName").trim());
-                vector.add(rs.getString("Address").trim());
-                vector.add(rs.getString("Phone").trim());
-                vector.add(rs.getString("Email").trim());
-                modle.addRow(vector);
-            }
-            tableProducer.setModel(modle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        List<Producer> list = producerService.getListProducer();
+
+        String[] arr = {"mã NSX", "Nhà Sản Xuất", "Địa Chỉ", "Số Điện Thoại", "Email"};
+        DefaultTableModel modle = new DefaultTableModel(arr, 0);
+        list.forEach((b) -> {
+            Vector vector = new Vector();
+            vector.add(b.getId().trim());
+            vector.add(b.getName().trim());
+            vector.add(b.getAddress().trim());
+            vector.add(b.getPhone().trim());
+            vector.add(b.getEmail().trim());
+            modle.addRow(vector);
+        });
+
+        tableProducer.setModel(modle);
+
     }
 
     private void loadClassify(String sql) {
@@ -325,7 +327,7 @@ public class DataView extends javax.swing.JFrame {
                 lblStatus.setText("Thêm nhà sản xuất thành công!");
                 setDisabledProducer();
                 setRefresh();
-                loadProducer(sql2);
+                loadProducer();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -408,7 +410,7 @@ public class DataView extends javax.swing.JFrame {
                 lblStatus.setText("Lưu thay đổi thành công!");
                 setDisabledProducer();
                 setRefresh();
-                loadProducer(sql2);
+                loadProducer();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -1287,7 +1289,7 @@ public class DataView extends javax.swing.JFrame {
                 lblStatus.setText("Xóa loại nhà sản xuất thành công!");
                 setDisabledProducer();
                 setRefresh();
-                loadProducer(sql2);
+                loadProducer();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -1310,7 +1312,7 @@ public class DataView extends javax.swing.JFrame {
 
     private void btnRefreshProducerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshProducerMouseClicked
         setRefresh();
-        loadProducer(sql2);
+        loadProducer();
     }//GEN-LAST:event_btnRefreshProducerMouseClicked
 
     private void tableProducerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProducerMouseClicked
@@ -1484,16 +1486,21 @@ public class DataView extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DataView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
