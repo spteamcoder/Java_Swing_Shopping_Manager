@@ -1,11 +1,15 @@
 package UserInterFace;
 
 import ConfigDB.ConnectDB;
+import Model.Position;
+import Service.Impl.PositionServiceImpl;
+import Service.PositionService;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,8 +25,7 @@ public class Data extends javax.swing.JFrame {
 
     private Detail detail;
     private boolean isCheckedAdd = false, isCheckedChange = false;
-
-    String sql1 = "SELECT * FROM Position";
+    private PositionService positionService;
     String sql2 = "SELECT * FROM Producer";
     String sql3 = "SELECT * FROM Classify";
 
@@ -30,11 +33,12 @@ public class Data extends javax.swing.JFrame {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
+        positionService = new PositionServiceImpl();
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         detail = new Detail(d);
         lblStatus.setForeground(Color.red);
         connection();
-        loadPosition(sql1);
+        loadPosition();
         loadProducer(sql2);
         loadClassify(sql3);
         setDisabledPosition();
@@ -46,24 +50,22 @@ public class Data extends javax.swing.JFrame {
         conn = connectDB.getConnect();
     }
 
-    private void loadPosition(String sql) {
+    private void loadPosition() {
         tablePosition.removeAll();
-        try {
-            String[] arr = {"Mã Chức Vụ", "Chức Vụ", "Lương Cơ Bản"};
-            DefaultTableModel modle = new DefaultTableModel(arr, 0);
-            pst = conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                Vector vector = new Vector();
-                vector.add(rs.getString("ID").trim());
-                vector.add(rs.getString("Position").trim());
-                vector.add(rs.getString("Payroll").trim());
-                modle.addRow(vector);
-            }
-            tablePosition.setModel(modle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        List<Position> list = positionService.getListPosition();
+
+        String[] arr = {"Mã Chức Vụ", "Chức Vụ", "Lương Cơ Bản"};
+        DefaultTableModel modle = new DefaultTableModel(arr, 0);
+
+        list.forEach((b) -> {
+            Vector vector = new Vector();
+            vector.add(b.getId().trim());
+            vector.add(b.getPosition().trim());
+            vector.add(b.getPayroll().trim());
+            modle.addRow(vector);
+        });
+        tablePosition.setModel(modle);
+
     }
 
     private void loadProducer(String sql) {
@@ -302,7 +304,7 @@ public class Data extends javax.swing.JFrame {
                 lblStatus.setText("Thêm Chức vụ thành công!");
                 setDisabledPosition();
                 setRefresh();
-                loadPosition(sql1);
+                loadPosition();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -362,7 +364,7 @@ public class Data extends javax.swing.JFrame {
                 lblStatus.setText("Lưu thay đổi thành công!");
                 setDisabledPosition();
                 setRefresh();
-                loadPosition(sql1);
+                loadPosition();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -1451,7 +1453,7 @@ public class Data extends javax.swing.JFrame {
                 lblStatus.setText("Xóa loại chức vụ thành công!");
                 setDisabledPosition();
                 setRefresh();
-                loadPosition(sql1);
+                loadPosition();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
