@@ -192,23 +192,6 @@ public class DataView extends javax.swing.JFrame {
         setDisabledProducer();
     }
 
-    private boolean findProducerById() {
-        boolean kq = true;
-        String sqlCheck = "SELECT * FROM Producer";
-        try {
-            pst = conn.prepareStatement(sqlCheck);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                if (this.txbIDProducer.getText().equals(rs.getString("ID").toString().trim())) {
-                    return false;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return kq;
-    }
-
     private boolean findClasstifyById() {
         boolean kq = true;
         String sqlCheck = "SELECT * FROM Classify";
@@ -1285,7 +1268,8 @@ public class DataView extends javax.swing.JFrame {
 
     private void btnSaveProducerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveProducerActionPerformed
         if (isCheckedAdd == true) {
-            if (findProducerById()) {
+            String id = this.txbIDProducer.getText();
+            if (producerService.findProducerById(id)) {
                 addProducer();
             } else {
                 lblStatus.setText("Mã nhà sản xuất bạn nhập đã tồn tại!");

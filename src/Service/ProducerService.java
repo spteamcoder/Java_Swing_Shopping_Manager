@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Service;
 
 import Model.Producer;
@@ -14,6 +13,9 @@ import java.util.List;
  * @author VLT
  */
 public interface ProducerService {
-        List<Producer> getListProducer();
+
+    List<Producer> getListProducer();
+    
+    boolean findProducerById(String id);
 
 }
