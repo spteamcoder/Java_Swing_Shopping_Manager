@@ -23,9 +23,9 @@ public class ConnectDB {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(dbURL, username, password);
-            System.out.println("Connect successfully!");
+//            System.out.println("Connect thành công!");
         } catch (Exception ex) {
-            System.out.println("Connect failure!");
+            System.out.println("Connect thất bại!");
             ex.printStackTrace();
         }
         return conn;

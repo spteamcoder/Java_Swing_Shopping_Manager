@@ -300,7 +300,7 @@ public class HomeManager extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccountActionPerformed
-        Account account = new Account(detail);
+        AccountView account = new AccountView(detail);
         this.setVisible(false);
         account.setVisible(true);
     }//GEN-LAST:event_btnAccountActionPerformed
