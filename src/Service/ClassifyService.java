@@ -6,15 +6,14 @@
 
 package Service;
 
-import Model.Position;
+import Model.Classify;
 import java.util.List;
 
 /**
  *
  * @author VLT
  */
-public interface PositionService {
-    List<Position> getListPosition();
-    
-    boolean findPositionById(String id);
+public interface ClassifyService {
+        List<Classify> getListClassify();
+
 }

@@ -1,8 +1,11 @@
 package View;
 
 import ConfigDB.ConnectDB;
+import Model.Classify;
 import Model.Position;
 import Model.Producer;
+import Service.ClassifyService;
+import Service.Impl.ClassifyServiceImpl;
 import Service.Impl.PositionServiceImpl;
 import Service.Impl.ProducerServiceImpl;
 import Service.PositionService;
@@ -30,6 +33,8 @@ public class DataView extends javax.swing.JFrame {
     private boolean isCheckedAdd = false, isCheckedChange = false;
     private PositionService positionService;
     private ProducerService producerService;
+    private ClassifyService classifyService;
+
     String sql3 = "SELECT * FROM Classify";
 
     public DataView(Detail d) {
@@ -38,6 +43,8 @@ public class DataView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         positionService = new PositionServiceImpl();
         producerService = new ProducerServiceImpl();
+        classifyService = new ClassifyServiceImpl();
+
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         detail = new Detail(d);
         lblStatus.setForeground(Color.red);
@@ -94,21 +101,18 @@ public class DataView extends javax.swing.JFrame {
 
     private void loadClassify(String sql) {
         tableClassify.removeAll();
-        try {
-            String[] arr = {"Mã Loại", "Loại Linh Kiện"};
-            DefaultTableModel modle = new DefaultTableModel(arr, 0);
-            pst = conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                Vector vector = new Vector();
-                vector.add(rs.getString("ID").trim());
-                vector.add(rs.getString("Classify").trim());
-                modle.addRow(vector);
-            }
-            tableClassify.setModel(modle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        List<Classify> list = classifyService.getListClassify();
+
+        String[] arr = {"Mã Loại", "Loại Linh Kiện"};
+        DefaultTableModel modle = new DefaultTableModel(arr, 0);
+        list.forEach((b) -> {
+            Vector vector = new Vector();
+            vector.add(b.getId().trim());
+            vector.add(b.getClassify().trim());
+            modle.addRow(vector);
+        });
+        tableClassify.setModel(modle);
+
     }
 
     private void backHome() {
@@ -186,23 +190,6 @@ public class DataView extends javax.swing.JFrame {
         setDisabledClassify();
         setDisabledPosition();
         setDisabledProducer();
-    }
-
-    private boolean findPositionById() {
-        boolean kq = true;
-        String sqlCheck = "SELECT * FROM Position";
-        try {
-            pst = conn.prepareStatement(sqlCheck);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                if (this.txbIDPosition.getText().equals(rs.getString("ID").toString().trim())) {
-                    return false;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return kq;
     }
 
     private boolean findProducerById() {
@@ -1464,7 +1451,8 @@ public class DataView extends javax.swing.JFrame {
 
     private void btnSavePositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePositionActionPerformed
         if (isCheckedAdd == true) {
-            if (findPositionById()) {
+            String id = this.txbIDPosition.getText();
+            if (positionService.findPositionById(id)) {
                 addPosition();
             } else {
                 lblStatus.setText("Mã chức vụ bạn nhập đã tồn tại!");
