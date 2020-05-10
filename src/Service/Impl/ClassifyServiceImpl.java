@@ -10,6 +10,7 @@ import Model.Classify;
 import Model.Classify;
 import Service.ClassifyService;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -65,6 +66,46 @@ public class ClassifyServiceImpl implements ClassifyService {
             }
         }
         return list;
+    }
+
+    @Override
+    public boolean findClasstifyById(String id) {
+            boolean kq = true;
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        ResultSet result = null;
+        String sqlCheck = "SELECT * FROM Classify";
+        try {
+            pst = conn.prepareStatement(sqlCheck);
+            result = pst.executeQuery();
+            while (result.next()) {
+                if (id.equals(result.getString("ID").toString().trim())) {
+                    return false;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
+        return kq;
     }
 
 }

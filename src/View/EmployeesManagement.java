@@ -705,9 +705,9 @@ public class EmployeesManagement extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHomeBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHomeBackMouseClicked
-        HomeAdmin home = new HomeAdmin(detail);
+        HomeManager homeManager = new HomeManager(detail);
+        homeManager.setVisible(true);
         this.setVisible(false);
-        home.setVisible(true);
     }//GEN-LAST:event_btnHomeBackMouseClicked
 
     private void tableEmployeesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEmployeesMouseClicked

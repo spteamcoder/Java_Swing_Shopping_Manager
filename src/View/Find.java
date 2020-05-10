@@ -785,9 +785,9 @@ public class Find extends javax.swing.JFrame {
 
     private void btnBackHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackHomeActionPerformed
         if (this.detail.getUser().toString().toString().equals("Admin")) {
-            HomeAdmin home = new HomeAdmin(detail);
+            HomeManager homeManager = new HomeManager(detail);
+            homeManager.setVisible(true);
             this.setVisible(false);
-            home.setVisible(true);
         } else {
             HomeUser home = new HomeUser(detail);
             this.setVisible(false);

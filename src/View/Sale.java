@@ -725,6 +725,11 @@ class Sale extends javax.swing.JFrame implements Runnable {
                 btnBackHomeMouseClicked(evt);
             }
         });
+        btnBackHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackHomeActionPerformed(evt);
+            }
+        });
 
         lblStatus.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -795,10 +800,10 @@ class Sale extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackHomeMouseClicked
-        if (this.detail.getUser().toString().toString().equals("Admin")) {
-            HomeAdmin home = new HomeAdmin(detail);
+        if (this.detail.getUser().toString().toString().equals("Manager")) {
+            HomeManager homeManager = new HomeManager(detail);
+            homeManager.setVisible(true);
             this.setVisible(false);
-            home.setVisible(true);
         } else {
             HomeUser home = new HomeUser(detail);
             this.setVisible(false);
@@ -1056,6 +1061,10 @@ class Sale extends javax.swing.JFrame implements Runnable {
             }
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnBackHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackHomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBackHomeActionPerformed
 
     public static void main(String args[]) {
 
