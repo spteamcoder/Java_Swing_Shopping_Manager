@@ -25,4 +25,6 @@ public interface AccountService {
     void changePassword(String username, String password);
     
     boolean getAccountByUsernameAndPassword(String username, String password);
+    
+    void deleteAccount(String username);
 }

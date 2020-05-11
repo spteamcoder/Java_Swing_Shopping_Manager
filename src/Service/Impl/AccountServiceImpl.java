@@ -246,4 +246,33 @@ public class AccountServiceImpl implements AccountService {
         return kq;
     }
 
+    @Override
+    public void deleteAccount(String username) {
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        String sqlDelete = "DELETE FROM Accounts WHERE UserName = ?";
+        try {
+            pst = conn.prepareStatement(sqlDelete);
+            pst.setString(1, username);
+
+            pst.executeUpdate();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
+    }
+
 }

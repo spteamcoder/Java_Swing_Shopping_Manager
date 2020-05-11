@@ -347,11 +347,11 @@ public class Revenue extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int lick = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
-        if (lick == JOptionPane.OK_OPTION) {
+        int isExist = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
+        if (isExist == JOptionPane.OK_OPTION) {
             System.exit(0);
         } else {
-            if (lick == JOptionPane.CANCEL_OPTION) {
+            if (isExist == JOptionPane.CANCEL_OPTION) {
                 this.setVisible(true);
             }
         }
@@ -365,7 +365,7 @@ public class Revenue extends javax.swing.JFrame {
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\D.Thanh Trung\\Documents\\NetBeansProjects\\Quan Ly Cua Hang Mua Ban Thiet Bi Dien Tu\\src\\UserInterFace\\ThongKe.jrxml");
+            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\ThongKe.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 

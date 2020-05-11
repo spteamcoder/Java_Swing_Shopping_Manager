@@ -959,8 +959,8 @@ class Sale extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnChangeActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int Click = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa sản phẩm khỏi hóa đơn hay không?", "Thông Báo", 2);
-        if (Click == JOptionPane.YES_OPTION) {
+        int isDelete = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa sản phẩm khỏi hóa đơn hay không?", "Thông Báo", 2);
+        if (isDelete == JOptionPane.YES_OPTION) {
             String sqlDelete = "DELETE FROM Bill WHERE Code = ?";
             try {
                 pst = conn.prepareStatement(sqlDelete);

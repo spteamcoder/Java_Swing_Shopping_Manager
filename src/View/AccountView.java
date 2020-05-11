@@ -517,26 +517,12 @@ public class AccountView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int Click = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa tài khoản hay không?", "Thông Báo", 2);
-        if (Click == JOptionPane.YES_OPTION) {
-            if (this.user.getText().equals("Admin")) {
-                this.lblStatus.setText("Không thể xóa tài khoản của Admin");
-            } else if (this.user.getText().equals("Manager")) {
-                this.lblStatus.setText("Không thể xóa tài khoản của Manager");
-            } else {
-                String sqlDelete = "DELETE FROM Accounts WHERE UserName = ?";
-                try {
-                    pst = conn.prepareStatement(sqlDelete);
-                    pst.setString(1, this.user.getText());
-
-                    pst.executeUpdate();
-                    this.lblStatus.setText("Xóa tài khoản thành công!");
-                    loadData();
-                    refreshData();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
+        int isDelete = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa tài khoản hay không?", "Thông Báo", 2);
+        if (isDelete == JOptionPane.YES_OPTION) {
+            accountService.deleteAccount(this.user.getText());
+            this.lblStatus.setText("Xóa tài khoản thành công!");
+            loadData();
+            refreshData();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
