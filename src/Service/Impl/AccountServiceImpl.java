@@ -150,7 +150,7 @@ public class AccountServiceImpl implements AccountService {
             pst = conn.prepareStatement(sqlCheck);
             result = pst.executeQuery();
             while (result.next()) {
-                if (username.equals(result.getString("Username").toString().trim())) {
+                if (username.equals(result.getString("Username").trim())) {
                     return false;
                 }
             }

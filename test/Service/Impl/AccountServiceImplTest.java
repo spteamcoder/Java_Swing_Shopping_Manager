@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Service.Impl;
 
 import Model.Account;
+import java.sql.Date;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
@@ -20,22 +19,22 @@ import static org.junit.Assert.*;
  * @author VLT
  */
 public class AccountServiceImplTest {
-    
+
     public AccountServiceImplTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -47,11 +46,11 @@ public class AccountServiceImplTest {
     public void testGetListAccounts() {
         System.out.println("getListAccounts");
         AccountServiceImpl instance = new AccountServiceImpl();
-        List<Account> expResult = null;
         List<Account> result = instance.getListAccounts();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(result.size(), 7);
+        assertEquals(result.get(0).getUsername(), "User");
+        assertEquals(result.get(1).getUsername(), "tramanh96");
+
     }
 
     /**
@@ -63,8 +62,7 @@ public class AccountServiceImplTest {
         Account account = null;
         AccountServiceImpl instance = new AccountServiceImpl();
         instance.addAccount(account);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -73,27 +71,39 @@ public class AccountServiceImplTest {
     @org.junit.Test
     public void testEditAccout() {
         System.out.println("editAccout");
-        String oldUsername = "";
-        Account account = null;
+        String oldUsername = "test01";
+        Account account = new Account("test01", "123", "Nguyen Van Test", new Date(2020, 01, 01), "Manager");
         AccountServiceImpl instance = new AccountServiceImpl();
         instance.editAccout(oldUsername, account);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
      * Test of findAccountByUsername method, of class AccountServiceImpl.
      */
     @org.junit.Test
-    public void testFindAccountByUsername() {
+    public void testExistAccountByUsername() {
         System.out.println("findAccountByUsername");
-        String username = "";
+        String username = "tramanh96";
         AccountServiceImpl instance = new AccountServiceImpl();
         boolean expResult = false;
         boolean result = instance.findAccountByUsername(username);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+    }
+
+    /**
+     * Test of findAccountByUsername method, of class AccountServiceImpl.
+     */
+    @org.junit.Test
+    public void testNotFindAccountByUsername() {
+        System.out.println("findAccountByUsername");
+        String username = "tramanh9116";
+        AccountServiceImpl instance = new AccountServiceImpl();
+        boolean expResult = true;
+        boolean result = instance.findAccountByUsername(username);
+        assertEquals(expResult, result);
+
     }
 
     /**
@@ -102,41 +112,55 @@ public class AccountServiceImplTest {
     @org.junit.Test
     public void testChangePassword() {
         System.out.println("changePassword");
-        String username = "";
-        String password = "";
+        String username = "tramanh96";
+        String password = "1234";
         AccountServiceImpl instance = new AccountServiceImpl();
         instance.changePassword(username, password);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
-     * Test of getAccountByUsernameAndPassword method, of class AccountServiceImpl.
+     * Test of getAccountByUsernameAndPassword method, of class
+     * AccountServiceImpl.
      */
     @org.junit.Test
-    public void testGetAccountByUsernameAndPassword() {
+    public void testGetAccountByUsernameAndPasswordSuccess() {
         System.out.println("getAccountByUsernameAndPassword");
-        String username = "";
-        String password = "";
+        String username = "admin";
+        String password = "123";
+        AccountServiceImpl instance = new AccountServiceImpl();
+        boolean expResult = true;
+        boolean result = instance.getAccountByUsernameAndPassword(username, password);
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of getAccountByUsernameAndPassword method, of class
+     * AccountServiceImpl.
+     */
+    @org.junit.Test
+    public void testGetAccountByUsernameAndPasswordFail() {
+        System.out.println("getAccountByUsernameAndPassword");
+        String username = "admin";
+        String password = "1231111";
         AccountServiceImpl instance = new AccountServiceImpl();
         boolean expResult = false;
         boolean result = instance.getAccountByUsernameAndPassword(username, password);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
+    // Delete data in sql so not test
     /**
      * Test of deleteAccount method, of class AccountServiceImpl.
      */
-    @org.junit.Test
-    public void testDeleteAccount() {
-        System.out.println("deleteAccount");
-        String username = "";
-        AccountServiceImpl instance = new AccountServiceImpl();
-        instance.deleteAccount(username);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
+//    @org.junit.Test
+//    public void testDeleteAccount() {
+//        System.out.println("deleteAccount");
+//        String username = "nhungoc";
+//        AccountServiceImpl instance = new AccountServiceImpl();
+//        instance.deleteAccount(username);
+//        
+//    }
 }
