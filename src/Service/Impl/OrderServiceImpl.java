@@ -7,7 +7,6 @@ package Service.Impl;
 
 import ConfigDB.ConnectDB;
 import Model.Order;
-import Model.Order;
 import Service.OrderService;
 import java.sql.Connection;
 import java.sql.Date;
@@ -122,7 +121,6 @@ public class OrderServiceImpl implements OrderService {
     public void insertOder(Order order) {
         PreparedStatement pst = null;
         Connection conn = cmdb.getConnect();
-        ResultSet rs = null;
         String sqlInsert = "INSERT INTO Orders (ID,Customer,Address,Phone,Product,Amount,Price,WarrantyPeriod,intoMoney,Date,PaymentMethods) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         try {
             pst = conn.prepareStatement(sqlInsert);
@@ -142,12 +140,6 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException ignore) {
-                }
-            }
             if (pst != null) {
                 try {
                     pst.close();
@@ -164,8 +156,41 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrder(Order order) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void updateOrder(String id, Order order) {
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        String sqlChange = "UPDATE Orders SET ID=?,Customer=?,Address=?,Phone=?,Product=?,Amount=?,Price=?,WarrantyPeriod=?,intoMoney=?,Date=?,PaymentMethods=? WHERE ID='" + id.trim() + "'";
+        try {
+            pst = conn.prepareStatement(sqlChange);
+
+            pst.setString(1, order.getId());
+            pst.setString(2, order.getCustomerName());
+            pst.setString(3, order.getAddress());
+            pst.setString(4, order.getPhone());
+            pst.setString(5, order.getProduct());
+            pst.setInt(6, order.getAmount());
+            pst.setString(7, order.getPrice());
+            pst.setString(8, order.getWarrantyPeriod());
+            pst.setString(9, order.getIntoMoney());
+            pst.setDate(10, order.getDate());
+            pst.setString(11, order.getMethods());
+            pst.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
     }
 
 }

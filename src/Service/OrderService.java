@@ -17,9 +17,9 @@ public interface OrderService {
     List<Order> getListOrder();
 
     boolean findOrderById(String id);
-    
+
     void insertOder(Order order);
-    
-    void updateOrder(Order order);
+
+    void updateOrder(String id, Order order);
 
 }
