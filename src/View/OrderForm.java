@@ -26,16 +26,16 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class OrderForm extends javax.swing.JFrame {
-
+    
     private static Connection conn = null;//,connData=null,connProduct;  
     private static PreparedStatement pst = null;
     private static ResultSet rs = null;
     private final ConnectDB connectDB = new ConnectDB();
-
+    
     private boolean isAdd = false, Change = false;
     private OrderService orderService;
     private Detail detail;
-
+    
     public OrderForm(Detail d) {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -45,14 +45,14 @@ public class OrderForm extends javax.swing.JFrame {
         orderService = new OrderServiceImpl();
         detail = new Detail(d);
         loadData();
-        Disabled();
+        disabled();
         lblStatus.setForeground(Color.red);
     }
-
+    
     private void connection() {
         conn = connectDB.getConnect();
     }
-
+    
     private void Enabled() {
         txbID.setEnabled(true);
         cbxClassify.setEnabled(true);
@@ -66,8 +66,8 @@ public class OrderForm extends javax.swing.JFrame {
         btnProduct.setEnabled(true);
         lblStatus.setText("Trạng Thái!");
     }
-
-    private void Disabled() {
+    
+    private void disabled() {
         txbID.setEnabled(false);
         cbxClassify.setEnabled(false);
         txbName.setEnabled(false);
@@ -82,14 +82,14 @@ public class OrderForm extends javax.swing.JFrame {
         txbDate.setEnabled(false);
         cbxPaymentMethods.setEnabled(false);
     }
-
+    
     public void loadData() {
         tableOrder.removeAll();
         List<Order> list = orderService.getListOrder();
-
+        
         String[] arr = {"Mã Đơn Hàng", "Khách Hàng", "Địa Chỉ", "Số Điện Thoại", "Sản Phẩm", "Số Lượng", "Giá", "Bảo Hành", "Thành Tiền", "Ngày Đặt", "Thanh Toán"};
         DefaultTableModel modle = new DefaultTableModel(arr, 0);
-
+        
         list.forEach((b) -> {
             Vector vector = new Vector();
             vector.add(b.getId().trim());
@@ -106,9 +106,9 @@ public class OrderForm extends javax.swing.JFrame {
             modle.addRow(vector);
         });
         tableOrder.setModel(modle);
-
+        
     }
-
+    
     private void loadClassify() {
         String sql = "SELECT * FROM Classify";
         try {
@@ -121,13 +121,13 @@ public class OrderForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    
     private void LoadPaymentMethods() {
         cbxPaymentMethods.removeAllItems();
         cbxPaymentMethods.addItem("Chuyển khoản");
         cbxPaymentMethods.addItem("Nhận hàng trả tiền");
     }
-
+    
     private void refreshData() {
         isAdd = false;
         Change = false;
@@ -147,46 +147,41 @@ public class OrderForm extends javax.swing.JFrame {
         btnDelete.setEnabled(false);
         btnChange.setEnabled(false);
         btnSave.setEnabled(false);
-        Disabled();
+        disabled();
     }
-
+    
     private void addOrder() {
         if (checkNull()) {
-            String sqlInsert = "INSERT INTO Orders (ID,Customer,Address,Phone,Product,Amount,Price,WarrantyPeriod,intoMoney,Date,PaymentMethods) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-            try {
-                pst = conn.prepareStatement(sqlInsert);
-
-                pst.setString(1, this.txbID.getText());
-                pst.setString(2, this.txbName.getText());
-                pst.setString(3, txbAddress.getText());
-                pst.setString(4, txbPhone.getText());
-                pst.setString(5, String.valueOf(this.cbxProduct.getSelectedItem()));
-                pst.setInt(6, Integer.parseInt(this.txbAmount.getText()));
-                pst.setString(7, txbPrice.getText());
-                pst.setString(8, this.txbWarrantyPeriod.getText());
-                pst.setString(9, this.txbIntoMoney.getText());
-                pst.setDate(10, new java.sql.Date(txbDate.getDate().getTime()));
-                pst.setString(11, String.valueOf(this.cbxPaymentMethods.getSelectedItem()));
-                pst.executeUpdate();
-                lblStatus.setText("Thêm Đơn đặt hàng thành công!");
-                Disabled();
-                refreshData();
-                loadData();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            Order order = new Order();
+            order.setId(this.txbID.getText());
+            order.setCustomerName(this.txbName.getText());
+            order.setAddress(txbAddress.getText());
+            order.setPhone(txbPhone.getText());
+            order.setProduct(String.valueOf(this.cbxProduct.getSelectedItem()));
+            order.setAmount(Integer.parseInt(this.txbAmount.getText()));
+            order.setPrice(txbPrice.getText());
+            order.setWarrantyPeriod(this.txbWarrantyPeriod.getText());
+            order.setIntoMoney(this.txbIntoMoney.getText());
+            order.setDate(new java.sql.Date(txbDate.getDate().getTime()));
+            order.setMethods(String.valueOf(this.cbxPaymentMethods.getSelectedItem()));
+            orderService.insertOder(order);
+            lblStatus.setText("Thêm Đơn đặt hàng thành công!");
+            disabled();
+            refreshData();
+            loadData();
+            
         }
     }
-
+    
     private void changeOrder() {
         int Click = tableOrder.getSelectedRow();
         TableModel model = tableOrder.getModel();
-
+        
         if (checkNull()) {
             String sqlChange = "UPDATE Orders SET ID=?,Customer=?,Address=?,Phone=?,Product=?,Amount=?,Price=?,WarrantyPeriod=?,intoMoney=?,Date=?,PaymentMethods=? WHERE ID='" + model.getValueAt(Click, 0).toString().trim() + "'";
             try {
                 pst = conn.prepareStatement(sqlChange);
-
+                
                 pst.setString(1, this.txbID.getText());
                 pst.setString(2, this.txbName.getText());
                 pst.setString(3, txbAddress.getText());
@@ -200,7 +195,7 @@ public class OrderForm extends javax.swing.JFrame {
                 pst.setString(11, String.valueOf(this.cbxPaymentMethods.getSelectedItem()));
                 pst.executeUpdate();
                 lblStatus.setText("Lưu thay đổi thành công!");
-                Disabled();
+                disabled();
                 refreshData();
                 loadData();
             } catch (Exception ex) {
@@ -208,7 +203,7 @@ public class OrderForm extends javax.swing.JFrame {
             }
         }
     }
-
+    
     public boolean checkNull() {
         boolean kq = true;
         if (String.valueOf(this.txbName.getText()).length() == 0) {
@@ -241,7 +236,7 @@ public class OrderForm extends javax.swing.JFrame {
         }
         return kq;
     }
-
+    
     private double convertedToNumbers(String s) {
         String number = "";
         String[] array = s.replace(",", " ").split("\\s");
@@ -250,11 +245,11 @@ public class OrderForm extends javax.swing.JFrame {
         }
         return Double.parseDouble(number);
     }
-
+    
     private String cutChar(String arry) {
         return arry.replaceAll("\\D+", "");
     }
-
+    
     private void loadDataProducts() {
         cbxClassify.removeAllItems();
         String sql = "SELECT * FROM Products where Name=?";
@@ -269,7 +264,7 @@ public class OrderForm extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -814,9 +809,9 @@ public class OrderForm extends javax.swing.JFrame {
             txbIntoMoney.setText("0" + " " + s[1]);
         } else {
             int soluong = Integer.parseInt(txbAmount.getText());
-
+            
             String[] s = txbPrice.getText().split("\\s");
-
+            
             txbIntoMoney.setText(formatter.format(convertedToNumbers(s[0]) * soluong) + " " + s[1]);
         }
     }//GEN-LAST:event_txbAmountKeyReleased
@@ -838,9 +833,9 @@ public class OrderForm extends javax.swing.JFrame {
         txbIntoMoney.setText(model.getValueAt(selectedRow, 8).toString());
         ((JTextField) txbDate.getDateEditor().getUiComponent()).setText(model.getValueAt(selectedRow, 9).toString());
         cbxPaymentMethods.addItem(model.getValueAt(selectedRow, 10).toString());
-
+        
         loadDataProducts();
-
+        
         btnChange.setEnabled(true);
         btnDelete.setEnabled(true);
     }//GEN-LAST:event_tableOrderMouseClicked
@@ -878,7 +873,7 @@ public class OrderForm extends javax.swing.JFrame {
                 pst.setString(3, txbAddress.getText());
                 pst.executeUpdate();
                 lblStatus.setText("Xóa đơn đặt hàng thành công!");
-                Disabled();
+                disabled();
                 refreshData();
                 loadData();
             } catch (Exception ex) {
@@ -928,9 +923,9 @@ public class OrderForm extends javax.swing.JFrame {
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
         try {
             JasperReport report = JasperCompileManager.compileReport("C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\Orders.jrxml");
-
+            
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
-
+            
             JasperViewer.viewReport(print, false);
         } catch (JRException ex) {
             ex.printStackTrace();
@@ -940,7 +935,7 @@ public class OrderForm extends javax.swing.JFrame {
     private void btnBackHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackHomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBackHomeActionPerformed
-
+    
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -958,7 +953,7 @@ public class OrderForm extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(OrderForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Detail detail = new Detail();

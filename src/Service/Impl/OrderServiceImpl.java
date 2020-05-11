@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return list;
     }
-    
+
     @Override
     public boolean findOrderById(String id) {
         boolean kq = true;
@@ -116,6 +116,51 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return kq;
+    }
+
+    @Override
+    public void insertOder(Order order) {
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        ResultSet rs = null;
+        String sqlInsert = "INSERT INTO Orders (ID,Customer,Address,Phone,Product,Amount,Price,WarrantyPeriod,intoMoney,Date,PaymentMethods) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            pst = conn.prepareStatement(sqlInsert);
+
+            pst.setString(1, order.getId());
+            pst.setString(2, order.getCustomerName());
+            pst.setString(3, order.getAddress());
+            pst.setString(4, order.getPhone());
+            pst.setString(5, order.getProduct());
+            pst.setInt(6, order.getAmount());
+            pst.setString(7, order.getPrice());
+            pst.setString(8, order.getWarrantyPeriod());
+            pst.setString(9, order.getIntoMoney());
+            pst.setDate(10, order.getDate());
+            pst.setString(11, order.getMethods());
+            pst.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
     }
 
 }
