@@ -489,14 +489,14 @@ public class AccountView extends javax.swing.JFrame {
         if (Click == JOptionPane.YES_OPTION) {
             if (this.user.getText().equals("Admin")) {
                 this.lblStatus.setText("Không thể xóa tài khoản của Admin");
+            } else if (this.user.getText().equals("Manager")) {
+                this.lblStatus.setText("Không thể xóa tài khoản của Manager");
             } else {
-                String sqlDelete = "DELETE FROM Accounts WHERE UserName = ? AND PassWord=? AND FullName=? AND DateCreated=?";
+                String sqlDelete = "DELETE FROM Accounts WHERE UserName = ?";
                 try {
                     pst = conn.prepareStatement(sqlDelete);
                     pst.setString(1, this.user.getText());
-                    pst.setString(2, this.pass.getText());
-                    pst.setString(3, this.cbxEmployees.getSelectedItem().toString());
-                    pst.setDate(4, new java.sql.Date(date.getDate().getTime()));
+
                     pst.executeUpdate();
                     this.lblStatus.setText("Xóa tài khoản thành công!");
                     loadData();

@@ -163,4 +163,9 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public void updateOrder(Order order) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

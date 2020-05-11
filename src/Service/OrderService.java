@@ -19,5 +19,7 @@ public interface OrderService {
     boolean findOrderById(String id);
     
     void insertOder(Order order);
+    
+    void updateOrder(Order order);
 
 }
