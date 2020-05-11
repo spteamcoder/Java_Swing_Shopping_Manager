@@ -1,14 +1,17 @@
 package View;
 
 import ConfigDB.ConnectDB;
+import Model.Order;
+import Model.Position;
+import Service.Impl.OrderService;
+import Service.OrderServiceImpl;
 import java.awt.Color;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -29,9 +32,8 @@ public class OrderForm extends javax.swing.JFrame {
     private static ResultSet rs = null;
     private final ConnectDB connectDB = new ConnectDB();
 
-    private boolean Add = false, Change = false;
-    private String sql = "SELECT * FROM Orders";
-
+    private boolean isAdd = false, Change = false;
+    private OrderService orderService;
     private Detail detail;
 
     public OrderForm(Detail d) {
@@ -40,8 +42,9 @@ public class OrderForm extends javax.swing.JFrame {
         this.setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         connection();
+        orderService = new OrderServiceImpl();
         detail = new Detail(d);
-        loadData(sql);
+        loadData();
         Disabled();
         lblStatus.setForeground(Color.red);
     }
@@ -80,32 +83,30 @@ public class OrderForm extends javax.swing.JFrame {
         cbxPaymentMethods.setEnabled(false);
     }
 
-    public void loadData(String sql) {
+    public void loadData() {
         tableOrder.removeAll();
-        try {
-            String[] arr = {"Mã Đơn Hàng", "Khách Hàng", "Địa Chỉ", "Số Điện Thoại", "Sản Phẩm", "Số Lượng", "Giá", "Bảo Hành", "Thành Tiền", "Ngày Đặt", "Thanh Toán"};
-            DefaultTableModel modle = new DefaultTableModel(arr, 0);
-            pst = conn.prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                Vector vector = new Vector();
-                vector.add(rs.getString("ID").trim());
-                vector.add(rs.getString("Customer").trim());
-                vector.add(rs.getString("Address").trim());
-                vector.add(rs.getString("Phone").trim());
-                vector.add(rs.getString("Product").trim());
-                vector.add(rs.getInt("Amount"));
-                vector.add(rs.getString("Price").trim());
-                vector.add(rs.getString("WarrantyPeriod").trim());
-                vector.add(rs.getString("intoMoney").trim());
-                vector.add(new SimpleDateFormat("dd/MM/yyyy").format(rs.getDate("Date")));
-                vector.add(rs.getString("PaymentMethods").trim());
-                modle.addRow(vector);
-            }
-            tableOrder.setModel(modle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        List<Order> list = orderService.getListOrder();
+
+        String[] arr = {"Mã Đơn Hàng", "Khách Hàng", "Địa Chỉ", "Số Điện Thoại", "Sản Phẩm", "Số Lượng", "Giá", "Bảo Hành", "Thành Tiền", "Ngày Đặt", "Thanh Toán"};
+        DefaultTableModel modle = new DefaultTableModel(arr, 0);
+
+        list.forEach((b) -> {
+            Vector vector = new Vector();
+            vector.add(b.getId().trim());
+            vector.add(b.getCustomerName().trim());
+            vector.add(b.getAddress().trim());
+            vector.add(b.getPhone().trim());
+            vector.add(b.getProduct().trim());
+            vector.add(b.getAmount());
+            vector.add(b.getPrice().trim());
+            vector.add(b.getWarrantyPeriod());
+            vector.add(b.getIntoMoney().trim());
+            vector.add(new SimpleDateFormat("dd/MM/yyyy").format(b.getDate()));
+            vector.add(b.getMethods().trim());
+            modle.addRow(vector);
+        });
+        tableOrder.setModel(modle);
+
     }
 
     private void loadClassify() {
@@ -127,8 +128,8 @@ public class OrderForm extends javax.swing.JFrame {
         cbxPaymentMethods.addItem("Nhận hàng trả tiền");
     }
 
-    private void Refresh() {
-        Add = false;
+    private void refreshData() {
+        isAdd = false;
         Change = false;
         txbName.setText("");
         txbAddress.setText("");
@@ -169,8 +170,8 @@ public class OrderForm extends javax.swing.JFrame {
                 pst.executeUpdate();
                 lblStatus.setText("Thêm Đơn đặt hàng thành công!");
                 Disabled();
-                Refresh();
-                loadData(sql);
+                refreshData();
+                loadData();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -200,8 +201,8 @@ public class OrderForm extends javax.swing.JFrame {
                 pst.executeUpdate();
                 lblStatus.setText("Lưu thay đổi thành công!");
                 Disabled();
-                Refresh();
-                loadData(sql);
+                refreshData();
+                loadData();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -271,7 +272,7 @@ public class OrderForm extends javax.swing.JFrame {
         return arry.replaceAll("\\D+", "");
     }
 
-    private void loadData() {
+    private void loadDataProducts() {
         cbxClassify.removeAllItems();
         String sql = "SELECT * FROM Products where Name=?";
         try {
@@ -328,7 +329,7 @@ public class OrderForm extends javax.swing.JFrame {
         btnChange = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnPrint = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -621,11 +622,11 @@ public class OrderForm extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Print Sale.png"))); // NOI18N
-        jButton1.setText("In Danh Sách");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Print Sale.png"))); // NOI18N
+        btnPrint.setText("In Danh Sách");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnPrintActionPerformed(evt);
             }
         });
 
@@ -697,7 +698,7 @@ public class OrderForm extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -711,7 +712,7 @@ public class OrderForm extends javax.swing.JFrame {
                         .addComponent(btnChange, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnPrint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -770,8 +771,8 @@ public class OrderForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackHomeMouseClicked
-        if (this.detail.getUser().toString().toString().equals("Admin")) {
-            HomeAdmin home = new HomeAdmin(detail);
+        if (this.detail.getUser().toString().toString().equals("Manager")) {
+            HomeManager home = new HomeManager(detail);
             this.setVisible(false);
             home.setVisible(true);
         } else {
@@ -838,32 +839,32 @@ public class OrderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txbAmountKeyReleased
 
     private void tableOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOrderMouseClicked
-        int Click = tableOrder.getSelectedRow();
+        int selectedRow = tableOrder.getSelectedRow();
         TableModel model = tableOrder.getModel();
         cbxProduct.removeAllItems();
         cbxPaymentMethods.removeAllItems();
         cbxClassify.removeAllItems();
-        txbID.setText(model.getValueAt(Click, 0).toString());
-        txbName.setText(model.getValueAt(Click, 1).toString());
-        txbAddress.setText(model.getValueAt(Click, 2).toString());
-        txbPhone.setText(model.getValueAt(Click, 3).toString());
-        cbxProduct.addItem(model.getValueAt(Click, 4).toString());
-        txbAmount.setText(model.getValueAt(Click, 5).toString());
-        txbPrice.setText(model.getValueAt(Click, 6).toString());
-        txbWarrantyPeriod.setText(model.getValueAt(Click, 7).toString());
-        txbIntoMoney.setText(model.getValueAt(Click, 8).toString());
-        ((JTextField) txbDate.getDateEditor().getUiComponent()).setText(model.getValueAt(Click, 9).toString());
-        cbxPaymentMethods.addItem(model.getValueAt(Click, 10).toString());
+        txbID.setText(model.getValueAt(selectedRow, 0).toString());
+        txbName.setText(model.getValueAt(selectedRow, 1).toString());
+        txbAddress.setText(model.getValueAt(selectedRow, 2).toString());
+        txbPhone.setText(model.getValueAt(selectedRow, 3).toString());
+        cbxProduct.addItem(model.getValueAt(selectedRow, 4).toString());
+        txbAmount.setText(model.getValueAt(selectedRow, 5).toString());
+        txbPrice.setText(model.getValueAt(selectedRow, 6).toString());
+        txbWarrantyPeriod.setText(model.getValueAt(selectedRow, 7).toString());
+        txbIntoMoney.setText(model.getValueAt(selectedRow, 8).toString());
+        ((JTextField) txbDate.getDateEditor().getUiComponent()).setText(model.getValueAt(selectedRow, 9).toString());
+        cbxPaymentMethods.addItem(model.getValueAt(selectedRow, 10).toString());
 
-        loadData();
+        loadDataProducts();
 
         btnChange.setEnabled(true);
         btnDelete.setEnabled(true);
     }//GEN-LAST:event_tableOrderMouseClicked
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        Refresh();
-        Add = true;
+        refreshData();
+        isAdd = true;
         btnAdd.setEnabled(false);
         btnSave.setEnabled(true);
         Enabled();
@@ -873,7 +874,7 @@ public class OrderForm extends javax.swing.JFrame {
 
     private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
         Change = true;
-        Add = false;
+        isAdd = false;
         btnAdd.setEnabled(false);
         btnDelete.setEnabled(false);
         btnChange.setEnabled(false);
@@ -884,8 +885,8 @@ public class OrderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnChangeActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int Click = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa đơn đặt hàng hay không?", "Thông Báo", 2);
-        if (Click == JOptionPane.YES_OPTION) {
+        int isDelete = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa đơn đặt hàng hay không?", "Thông Báo", 2);
+        if (isDelete == JOptionPane.YES_OPTION) {
             String sqlDelete = "DELETE FROM Orders WHERE Phone=? AND Customer=? AND Address=?";
             try {
                 pst = conn.prepareStatement(sqlDelete);
@@ -895,8 +896,8 @@ public class OrderForm extends javax.swing.JFrame {
                 pst.executeUpdate();
                 lblStatus.setText("Xóa đơn đặt hàng thành công!");
                 Disabled();
-                Refresh();
-                loadData(sql);
+                refreshData();
+                loadData();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -904,7 +905,7 @@ public class OrderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (Add == true) {
+        if (isAdd == true) {
             if (findOrderById()) {
                 addOrder();
             } else {
@@ -916,15 +917,15 @@ public class OrderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnRefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRefreshMouseClicked
-        Refresh();
+        refreshData();
     }//GEN-LAST:event_btnRefreshMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int lick = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
-        if (lick == JOptionPane.OK_OPTION) {
+        int isExit = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
+        if (isExit == JOptionPane.OK_OPTION) {
             System.exit(0);
         } else {
-            if (lick == JOptionPane.CANCEL_OPTION) {
+            if (isExit == JOptionPane.CANCEL_OPTION) {
                 this.setVisible(true);
             }
         }
@@ -940,9 +941,9 @@ public class OrderForm extends javax.swing.JFrame {
         product.setVisible(true);
     }//GEN-LAST:event_btnProductActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\D.Thanh Trung\\Documents\\NetBeansProjects\\Quan Ly Cua Hang Mua Ban Thiet Bi Dien Tu\\src\\UserInterFace\\Orders.jrxml");
+            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\Orders.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 
@@ -950,7 +951,7 @@ public class OrderForm extends javax.swing.JFrame {
         } catch (JRException ex) {
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnPrintActionPerformed
 
     private void btnBackHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackHomeActionPerformed
         // TODO add your handling code here:
@@ -987,13 +988,13 @@ public class OrderForm extends javax.swing.JFrame {
     private javax.swing.JButton btnBackHome;
     private javax.swing.JButton btnChange;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnProduct;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbxClassify;
     private javax.swing.JComboBox<String> cbxPaymentMethods;
     private javax.swing.JComboBox<String> cbxProduct;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
