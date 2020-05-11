@@ -108,4 +108,40 @@ public class PositionServiceImpl implements PositionService {
         return kq;
     }
 
+    @Override
+    public void insertPosition(Position position) {
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        ResultSet result = null;
+        String sqlInsert = "INSERT INTO Position (ID,Position,Payroll) VALUES(?,?,?)";
+        try {
+            pst = conn.prepareStatement(sqlInsert);
+            pst.setString(1, position.getId());
+            pst.setString(2, position.getPosition());
+            pst.setString(3, position.getPayroll() + " " + "VND");
+            pst.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
+    }
+
 }

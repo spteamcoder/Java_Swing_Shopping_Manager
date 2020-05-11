@@ -249,20 +249,15 @@ public class DataView extends javax.swing.JFrame {
 
     private void addPosition() {
         if (checkNullPosition()) {
-            String sqlInsert = "INSERT INTO Position (ID,Position,Payroll) VALUES(?,?,?)";
-            try {
-                pst = conn.prepareStatement(sqlInsert);
-                pst.setString(1, txbIDPosition.getText());
-                pst.setString(2, txbPosition.getText());
-                pst.setString(3, txbPayroll.getText() + " " + "VND");
-                pst.executeUpdate();
-                lblStatus.setText("Thêm Chức vụ thành công!");
-                setDisabledPosition();
-                setRefresh();
-                loadPosition();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            Position p = new Position();
+            p.setId(txbIDPosition.getText());
+            p.setPosition(txbPosition.getText());
+            p.setPayroll(txbPayroll.getText() + " " + "VND");
+            positionService.insertPosition(p);
+            lblStatus.setText("Thêm Chức vụ thành công!");
+            setDisabledPosition();
+            setRefresh();
+            loadPosition();
         }
     }
 
@@ -1231,14 +1226,10 @@ public class DataView extends javax.swing.JFrame {
     private void btnDeleteProducerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteProducerActionPerformed
         int chooseNumber = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa nhà sản xuất hay không?", "Thông Báo", 2);
         if (chooseNumber == JOptionPane.YES_OPTION) {
-            String sqlDelete = "DELETE FROM Producer WHERE ID=? AND  ProducerName=? AND Address=? AND Phone=? AND Email=?";
+            String sqlDelete = "DELETE FROM Producer WHERE ID=?";
             try {
                 pst = conn.prepareStatement(sqlDelete);
                 pst.setString(1, txbIDProducer.getText());
-                pst.setString(2, txbProducer.getText());
-                pst.setString(3, txbAdress.getText());
-                pst.setString(4, txbPhone.getText());
-                pst.setString(5, txbEmail.getText());
                 pst.executeUpdate();
                 lblStatus.setText("Xóa loại nhà sản xuất thành công!");
                 setDisabledProducer();
@@ -1345,11 +1336,10 @@ public class DataView extends javax.swing.JFrame {
     private void btnDeleteClassifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteClassifyActionPerformed
         int Click = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa loại linh kiện hay không?", "Thông Báo", 2);
         if (Click == JOptionPane.YES_OPTION) {
-            String sqlDelete = "DELETE FROM Classify WHERE ID=? AND Classify=?";
+            String sqlDelete = "DELETE FROM Classify WHERE ID=?";
             try {
                 pst = conn.prepareStatement(sqlDelete);
                 pst.setString(1, txbIDClassify.getText());
-                pst.setString(2, txbClassify.getText());
                 pst.executeUpdate();
                 lblStatus.setText("Xóa loại nhà sản xuất thành công!");
                 setDisabledClassify();
@@ -1400,12 +1390,10 @@ public class DataView extends javax.swing.JFrame {
     private void btnDeletePositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletePositionActionPerformed
         int Click = JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa chức vụ hay không?", "Thông Báo", 2);
         if (Click == JOptionPane.YES_OPTION) {
-            String sqlDelete = "DELETE FROM Position WHERE ID=? AND Position=? AND Payroll=?";
+            String sqlDelete = "DELETE FROM Position WHERE ID=?";
             try {
                 pst = conn.prepareStatement(sqlDelete);
                 pst.setString(1, txbIDPosition.getText());
-                pst.setString(2, txbPosition.getText());
-                pst.setString(3, txbPayroll.getText() + " " + "VND");
                 pst.executeUpdate();
                 lblStatus.setText("Xóa loại chức vụ thành công!");
                 setDisabledPosition();

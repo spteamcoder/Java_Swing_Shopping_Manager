@@ -17,4 +17,6 @@ public interface PositionService {
     List<Position> getListPosition();
     
     boolean findPositionById(String id);
+    
+    void insertPosition(Position position);
 }
