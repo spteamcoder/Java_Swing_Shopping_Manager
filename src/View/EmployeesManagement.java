@@ -811,16 +811,15 @@ public class EmployeesManagement extends javax.swing.JFrame {
                     txbPayroll.setText("0");
                 } else {
                     if (txbLevel.getText().equals("0")) {
-                        int Level = Integer.parseInt(txbLevel.getText());
 
                         String[] s = rs.getString("Payroll").trim().split("\\s");
 
                         txbPayroll.setText(formatter.format((int) (convertedToNumbers(s[0]) / 2)));
                     } else {
-                        int Level = Integer.parseInt(txbLevel.getText().toString());
+                        int level = Integer.parseInt(txbLevel.getText());
                         String[] s = rs.getString("Payroll").trim().split("\\s");
 
-                        txbPayroll.setText(formatter.format(Level * convertedToNumbers(s[0])));
+                        txbPayroll.setText(formatter.format(level * convertedToNumbers(s[0])));
                     }
                 }
             }
