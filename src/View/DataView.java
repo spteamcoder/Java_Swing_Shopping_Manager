@@ -23,20 +23,20 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class DataView extends javax.swing.JFrame {
-
+    
     private Connection conn = null;
     private PreparedStatement pst = null;
     private ResultSet rs = null;
     private final ConnectDB connectDB = new ConnectDB();
-
+    
     private Detail detail;
     private boolean isCheckedAdd = false, isCheckedChange = false;
     private PositionService positionService;
     private ProducerService producerService;
     private ClassifyService classifyService;
-
+    
     String sql3 = "SELECT * FROM Classify";
-
+    
     public DataView(Detail d) {
         initComponents();
         setResizable(false);
@@ -44,7 +44,7 @@ public class DataView extends javax.swing.JFrame {
         positionService = new PositionServiceImpl();
         producerService = new ProducerServiceImpl();
         classifyService = new ClassifyServiceImpl();
-
+        
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         detail = new Detail(d);
         lblStatus.setForeground(Color.red);
@@ -56,18 +56,18 @@ public class DataView extends javax.swing.JFrame {
         setDisabledClassify();
         setDisabledProducer();
     }
-
+    
     private void connection() {
         conn = connectDB.getConnect();
     }
-
+    
     private void loadPosition() {
         tablePosition.removeAll();
         List<Position> list = positionService.getListPosition();
-
+        
         String[] arr = {"Mã Chức Vụ", "Chức Vụ", "Lương Cơ Bản"};
         DefaultTableModel modle = new DefaultTableModel(arr, 0);
-
+        
         list.forEach((b) -> {
             Vector vector = new Vector();
             vector.add(b.getId().trim());
@@ -76,13 +76,13 @@ public class DataView extends javax.swing.JFrame {
             modle.addRow(vector);
         });
         tablePosition.setModel(modle);
-
+        
     }
-
+    
     private void loadProducer() {
         tableProducer.removeAll();
         List<Producer> list = producerService.getListProducer();
-
+        
         String[] arr = {"Mã NSX", "Nhà Sản Xuất", "Địa Chỉ", "Số Điện Thoại", "Email"};
         DefaultTableModel modle = new DefaultTableModel(arr, 0);
         list.forEach((b) -> {
@@ -94,15 +94,15 @@ public class DataView extends javax.swing.JFrame {
             vector.add(b.getEmail().trim());
             modle.addRow(vector);
         });
-
+        
         tableProducer.setModel(modle);
-
+        
     }
-
+    
     private void loadClassify(String sql) {
         tableClassify.removeAll();
         List<Classify> list = classifyService.getListClassify();
-
+        
         String[] arr = {"Mã Loại", "Loại Linh Kiện"};
         DefaultTableModel modle = new DefaultTableModel(arr, 0);
         list.forEach((b) -> {
@@ -112,22 +112,22 @@ public class DataView extends javax.swing.JFrame {
             modle.addRow(vector);
         });
         tableClassify.setModel(modle);
-
+        
     }
-
+    
     private void backHome() {
         HomeManager homeManager = new HomeManager(detail);
         homeManager.setVisible(true);
         this.setVisible(false);
     }
-
+    
     private void setEnabledPosition() {
         txbIDPosition.setEnabled(true);
         txbPosition.setEnabled(true);
         txbPayroll.setEnabled(true);
         lblStatus.setText("Trạng Thái!");
     }
-
+    
     private void setEnabledProducer() {
         txbIDProducer.setEnabled(true);
         txbProducer.setEnabled(true);
@@ -136,19 +136,19 @@ public class DataView extends javax.swing.JFrame {
         txbEmail.setEnabled(true);
         lblStatus.setText("Trạng Thái!");
     }
-
+    
     private void setEnabledClassify() {
         txbIDClassify.setEnabled(true);
         txbClassify.setEnabled(true);
         lblStatus.setText("Trạng Thái!");
     }
-
+    
     private void setDisabledPosition() {
         txbIDPosition.setEnabled(false);
         txbPosition.setEnabled(false);
         txbPayroll.setEnabled(false);
     }
-
+    
     private void setDisabledProducer() {
         txbIDProducer.setEnabled(false);
         txbProducer.setEnabled(false);
@@ -156,12 +156,12 @@ public class DataView extends javax.swing.JFrame {
         txbPhone.setEnabled(false);
         txbEmail.setEnabled(false);
     }
-
+    
     private void setDisabledClassify() {
         txbIDClassify.setEnabled(false);
         txbClassify.setEnabled(false);
     }
-
+    
     private void setRefresh() {
         isCheckedChange = false;
         isCheckedAdd = false;
@@ -191,7 +191,7 @@ public class DataView extends javax.swing.JFrame {
         setDisabledPosition();
         setDisabledProducer();
     }
-
+    
     private boolean checkNullPosition() {
         boolean kq = true;
         if (String.valueOf(this.txbIDPosition.getText()).length() == 0) {
@@ -208,7 +208,7 @@ public class DataView extends javax.swing.JFrame {
         }
         return kq;
     }
-
+    
     private boolean checkNullProducer() {
         boolean kq = true;
         if (String.valueOf(this.txbIDProducer.getText()).length() == 0) {
@@ -233,7 +233,7 @@ public class DataView extends javax.swing.JFrame {
         }
         return kq;
     }
-
+    
     private boolean checkNullClassify() {
         boolean kq = true;
         if (String.valueOf(this.txbIDClassify.getText()).length() == 0) {
@@ -246,7 +246,7 @@ public class DataView extends javax.swing.JFrame {
         }
         return kq;
     }
-
+    
     private void addPosition() {
         if (checkNullPosition()) {
             Position p = new Position();
@@ -260,7 +260,7 @@ public class DataView extends javax.swing.JFrame {
             loadPosition();
         }
     }
-
+    
     private void addProducer() {
         if (checkNullProducer()) {
             Producer p = new Producer();
@@ -274,33 +274,29 @@ public class DataView extends javax.swing.JFrame {
             setDisabledProducer();
             setRefresh();
             loadProducer();
-
+            
         }
     }
-
+    
     private void addClassify() {
         if (checkNullClassify()) {
-            String sqlInsert = "INSERT INTO Classify (ID,Classify) VALUES(?,?)";
-            try {
-                pst = conn.prepareStatement(sqlInsert);
-                pst.setString(1, txbIDClassify.getText());
-                pst.setString(2, txbClassify.getText());
-                pst.executeUpdate();
-                lblStatus.setText("Thêm loại linh kiện thành công!");
-                setDisabledClassify();
-                setRefresh();
-                loadClassify(sql3);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            Classify c = new Classify();
+            c.setId(txbIDClassify.getText());
+            c.setClassify(txbClassify.getText());
+            classifyService.insertClasstify(c);
+            lblStatus.setText("Thêm loại linh kiện thành công!");
+            setDisabledClassify();
+            setRefresh();
+            loadClassify(sql3);
+            
         }
     }
-
+    
     private void changedPosition() {
-        int Click = tablePosition.getSelectedRow();
+        int selectedRow = tablePosition.getSelectedRow();
         TableModel model = tablePosition.getModel();
         if (checkNullPosition()) {
-            String sqlChange = "UPDATE Position SET ID=?, Position=?,Payroll=? WHERE ID='" + model.getValueAt(Click, 0).toString().trim() + "'";
+            String sqlChange = "UPDATE Position SET ID=?, Position=?,Payroll=? WHERE ID='" + model.getValueAt(selectedRow, 0).toString().trim() + "'";
             try {
                 pst = conn.prepareStatement(sqlChange);
                 pst.setString(1, txbIDPosition.getText());
@@ -316,12 +312,12 @@ public class DataView extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private void changedClassify() {
-        int Click = tableClassify.getSelectedRow();
+        int selectedRow = tableClassify.getSelectedRow();
         TableModel model = tableClassify.getModel();
         if (checkNullClassify()) {
-            String sqlChange = "UPDATE Classify SET ID=?, Classify=? WHERE ID='" + model.getValueAt(Click, 0).toString().trim() + "'";;
+            String sqlChange = "UPDATE Classify SET ID=?, Classify=? WHERE ID='" + model.getValueAt(selectedRow, 0).toString().trim() + "'";;
             try {
                 pst = conn.prepareStatement(sqlChange);
                 pst.setString(1, txbIDClassify.getText());
@@ -336,13 +332,13 @@ public class DataView extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private void changedProducer() {
-        int Click = tableProducer.getSelectedRow();
+        int selectedRow = tableProducer.getSelectedRow();
         TableModel model = tableProducer.getModel();
-
+        
         if (checkNullProducer()) {
-            String sqlChange = "UPDATE Producer SET ID=?, ProducerName=?, Address=?, Phone=?,Email=? WHERE ID='" + model.getValueAt(Click, 0).toString().trim() + "'";;
+            String sqlChange = "UPDATE Producer SET ID=?, ProducerName=?, Address=?, Phone=?,Email=? WHERE ID='" + model.getValueAt(selectedRow, 0).toString().trim() + "'";;
             try {
                 pst = conn.prepareStatement(sqlChange);
                 pst.setString(1, txbIDProducer.getText());
@@ -360,7 +356,7 @@ public class DataView extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private double convertedToNumbers(String s) {
         String number = "";
         String[] array = s.replace(",", " ").split("\\s");
@@ -369,11 +365,11 @@ public class DataView extends javax.swing.JFrame {
         }
         return Double.parseDouble(number);
     }
-
+    
     private String cutChar(String arry) {
         return arry.replaceAll("\\D+", "");
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1195,12 +1191,12 @@ public class DataView extends javax.swing.JFrame {
     private void tablePositionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePositionMouseClicked
         int selectedRow = tablePosition.getSelectedRow();
         TableModel model = tablePosition.getModel();
-
+        
         txbIDPosition.setText(model.getValueAt(selectedRow, 0).toString());
         txbPosition.setText(model.getValueAt(selectedRow, 1).toString());
         String[] s = model.getValueAt(selectedRow, 2).toString().split("\\s");
         txbPayroll.setText(s[0]);
-
+        
         btnChangePosition.setEnabled(true);
         btnDeletePosition.setEnabled(true);
     }//GEN-LAST:event_tablePositionMouseClicked
@@ -1264,13 +1260,13 @@ public class DataView extends javax.swing.JFrame {
     private void tableProducerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProducerMouseClicked
         int selectedRow = tableProducer.getSelectedRow();
         TableModel model = tableProducer.getModel();
-
+        
         txbIDProducer.setText(model.getValueAt(selectedRow, 0).toString());
         txbProducer.setText(model.getValueAt(selectedRow, 1).toString());
         txbAdress.setText(model.getValueAt(selectedRow, 2).toString());
         txbPhone.setText(model.getValueAt(selectedRow, 3).toString());
         txbEmail.setText(model.getValueAt(selectedRow, 4).toString());
-
+        
         btnChangeProducer.setEnabled(true);
         btnDeleteProducer.setEnabled(true);
     }//GEN-LAST:event_tableProducerMouseClicked
@@ -1278,10 +1274,10 @@ public class DataView extends javax.swing.JFrame {
     private void tableClassifyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClassifyMouseClicked
         int Click = tableClassify.getSelectedRow();
         TableModel model = tableClassify.getModel();
-
+        
         txbIDClassify.setText(model.getValueAt(Click, 0).toString());
         txbClassify.setText(model.getValueAt(Click, 1).toString());
-
+        
         btnChangeClassify.setEnabled(true);
         btnDeleteClassify.setEnabled(true);
     }//GEN-LAST:event_tableClassifyMouseClicked
@@ -1430,14 +1426,14 @@ public class DataView extends javax.swing.JFrame {
         homeManager.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnBackHomeActionPerformed
-
+    
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
@@ -1453,7 +1449,7 @@ public class DataView extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(DataView.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Detail detail = new Detail();

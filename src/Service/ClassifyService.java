@@ -17,4 +17,6 @@ public interface ClassifyService {
     List<Classify> getListClassify();
 
     boolean findClasstifyById(String id);
+    
+    void insertClasstify(Classify c);
 }

@@ -70,7 +70,7 @@ public class ClassifyServiceImpl implements ClassifyService {
 
     @Override
     public boolean findClasstifyById(String id) {
-            boolean kq = true;
+        boolean kq = true;
         PreparedStatement pst = null;
         Connection conn = cmdb.getConnect();
         ResultSet result = null;
@@ -106,6 +106,34 @@ public class ClassifyServiceImpl implements ClassifyService {
             }
         }
         return kq;
+    }
+
+    @Override
+    public void insertClasstify(Classify c) {
+        Connection conn = cmdb.getConnect();
+        PreparedStatement pst = null;
+        String sqlInsert = "INSERT INTO Classify (ID,Classify) VALUES(?,?)";
+        try {
+            pst = conn.prepareStatement(sqlInsert);
+            pst.setString(1, c.getId());
+            pst.setString(2, c.getClassify());
+            pst.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
     }
 
 }
