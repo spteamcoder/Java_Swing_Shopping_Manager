@@ -7,7 +7,6 @@ package ConfigDB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  *
@@ -16,7 +15,7 @@ import java.sql.SQLException;
 public class ConnectDB {
 
     public Connection getConnect() {
-        String dbURL = "jdbc:sqlserver://localhost:1433;database=CuaHangDienTu";
+        String dbURL = "jdbc:sqlserver://localhost:1433;database=ShoppingManager";
         String username = "sa";
         String password = "123456";
         Connection conn = null;

@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
         list = new ArrayList<>();
         Connection connection = cmdb.getConnect();
 
-        String query = "SELECT * FROM Accounts";
+        String query = "SELECT * FROM Accounts where Username != 'Admin'";
         ResultSet result = null;
         Statement statement = null;
         try {

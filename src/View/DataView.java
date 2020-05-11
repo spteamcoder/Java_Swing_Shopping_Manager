@@ -83,7 +83,7 @@ public class DataView extends javax.swing.JFrame {
         tableProducer.removeAll();
         List<Producer> list = producerService.getListProducer();
 
-        String[] arr = {"mã NSX", "Nhà Sản Xuất", "Địa Chỉ", "Số Điện Thoại", "Email"};
+        String[] arr = {"Mã NSX", "Nhà Sản Xuất", "Địa Chỉ", "Số Điện Thoại", "Email"};
         DefaultTableModel modle = new DefaultTableModel(arr, 0);
         list.forEach((b) -> {
             Vector vector = new Vector();

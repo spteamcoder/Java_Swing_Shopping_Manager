@@ -20,6 +20,8 @@ public class Account {
     private String fullname;
 
     private Date dateCreated;
+    
+    private String role;
 
     public String getUsername() {
         return username;
@@ -52,6 +54,14 @@ public class Account {
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
+    
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public Account(String username, String password, String fullname, Date dateCreated) {
         this.username = username;
@@ -61,6 +71,14 @@ public class Account {
     }
 
     public Account() {
+    }
+
+    public Account(String username, String password, String fullname, Date dateCreated, String role) {
+        this.username = username;
+        this.password = password;
+        this.fullname = fullname;
+        this.dateCreated = dateCreated;
+        this.role = role;
     }
 
     @Override

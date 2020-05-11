@@ -800,7 +800,7 @@ class Sale extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackHomeMouseClicked
-        if (this.detail.getUser().toString().toString().equals("Manager")) {
+        if (this.detail.getUser().equals("Manager")) {
             HomeManager homeManager = new HomeManager(detail);
             homeManager.setVisible(true);
             this.setVisible(false);
@@ -1052,11 +1052,11 @@ class Sale extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_btnPrintActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int lick = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
-        if (lick == JOptionPane.OK_OPTION) {
+        int isExit = JOptionPane.showConfirmDialog(null, "Bạn Có Muốn Thoát Khỏi Chương Trình Hay Không?", "Thông Báo", 2);
+        if (isExit == JOptionPane.OK_OPTION) {
             System.exit(0);
         } else {
-            if (lick == JOptionPane.CANCEL_OPTION) {
+            if (isExit == JOptionPane.CANCEL_OPTION) {
                 this.setVisible(true);
             }
         }
