@@ -1,7 +1,7 @@
-﻿CREATE DATABASE [ShoppingManager]
+﻿CREATE DATABASE [Managerment]
 GO
 
-USE [ShoppingManager]
+USE [Managerment]
 GO
 
 CREATE TABLE [dbo].[Accounts](
@@ -132,8 +132,7 @@ INSERT [dbo].[Accounts] ([UserName], [PassWord], [FullName], [DateCreated], [Rol
 INSERT [dbo].[Accounts] ([UserName], [PassWord], [FullName], [DateCreated], [Role]) VALUES (N'cuongcu', N'****', N'Dương Thanh Trung', CAST(N'2018-05-02' AS Date),N'Bán hàng')
 INSERT [dbo].[Accounts] ([UserName], [PassWord], [FullName], [DateCreated], [Role]) VALUES (N'tramanh96', N'123456789', N'Dương Thanh Trung', CAST(N'2018-04-30' AS Date),N'Bán hàng')
 INSERT [dbo].[Accounts] ([UserName], [PassWord], [FullName], [DateCreated], [Role]) VALUES (N'nhungoc', N'1234', N'Lâm Như Ngọc', CAST(N'2018-05-08' AS Date),N'Bán hàng')
-INSERT [dbo].[Accounts] ([UserName], [PassWord], [FullName], [DateCreated], [Role]) VALUES (N'Manager', N'123', N'Quản lý', CAST(N'2018-05-14' AS Date),N'Bán hàng')
-INSERT [dbo].[Accounts] ([UserName], [PassWord], [FullName], [DateCreated], [Role]) VALUES (N'xxxx', N'123', N'Dương Thanh Trung', CAST(N'2020-05-06' AS Date),N'Quản lý')
+INSERT [dbo].[Accounts] ([UserName], [PassWord], [FullName], [DateCreated], [Role]) VALUES (N'Manager', N'123', N'Quản lý', CAST(N'2018-05-14' AS Date),N'Manager')
 GO
 INSERT [dbo].[Bill] ([Code], [Product], [Amount], [IntoMoney]) VALUES (N'HW001', N'Hard Drive Kingston 120GB', 3, N'10,500,000 VND')
 GO

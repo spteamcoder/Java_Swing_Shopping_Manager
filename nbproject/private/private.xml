@@ -3,7 +3,35 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/VLT/Desktop/SQA/Quan%20Ly%20Cua%20Hang%20Mua%20Ban%20Thiet%20Bi%20Dien%20Tu/src/UserInterFace/Login.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/ConfigDB/ConnectDB.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Orders.jrxml</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Revenue.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/OrderService.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/PositionService.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/ThongKe.jrxml</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Empployees.jrxml</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Menu.jrxml</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/DataView.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Find.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/EmployeesManagement.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/ChangePasswordView.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/OrderForm.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Bill.jrxml</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Sale.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Model/Order.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/Impl/OrderServiceImpl.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Model/Account.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/ClassifyService.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/Impl/AccountServiceImpl.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/Impl/PositionServiceImpl.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/HomeAdmin.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/Login.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/AccountView.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Database/shopping_managerment.sql</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/ProducerService.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/AccountService.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/Service/Impl/ClassifyServiceImpl.java</file>
+            <file>file:/C:/Users/VLT/Desktop/SQA/ShoppingManager/src/View/HomeManager.java</file>
         </group>
     </open-files>
 </project-private>

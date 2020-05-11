@@ -44,8 +44,8 @@ public class AccountServiceImpl implements AccountService {
                 String password = result.getString(2);
                 String fullname = result.getString(3);
                 Date date = result.getDate(4);
-
-                list.add(new Account(username, password, fullname, date));
+                String role = result.getString(5);
+                list.add(new Account(username, password, fullname, date, role));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -76,13 +76,14 @@ public class AccountServiceImpl implements AccountService {
     public void addAccount(Account account) {
         Connection connection = cmdb.getConnect();
         PreparedStatement pst = null;
-        String sqlInsert = "INSERT INTO Accounts (UserName,PassWord,FullName,DateCreated) VALUES(?,?,?,?)";
+        String sqlInsert = "INSERT INTO Accounts (UserName,PassWord,FullName,DateCreated,Role) VALUES(?,?,?,?,?)";
         try {
             pst = connection.prepareStatement(sqlInsert);
             pst.setString(1, account.getUsername());
             pst.setString(2, account.getPassword());
             pst.setString(3, account.getFullname());
             pst.setDate(4, account.getDateCreated());
+            pst.setString(5, account.getRole());
             pst.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -107,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
         PreparedStatement pst = null;
         Connection conn = cmdb.getConnect();
 
-        String sqlUpdate = "UPDATE Accounts SET UserName=?,PassWord=?,FullName=?,DateCreated=? WHERE UserName='" + oldUsername + "'";
+        String sqlUpdate = "UPDATE Accounts SET UserName=?,PassWord=?,FullName=?,DateCreated=?,Role=? WHERE UserName='" + oldUsername + "'";
 
         try {
             pst = conn.prepareStatement(sqlUpdate);
@@ -115,6 +116,7 @@ public class AccountServiceImpl implements AccountService {
             pst.setString(2, account.getPassword());
             pst.setString(3, account.getFullname());
             pst.setDate(4, account.getDateCreated());
+            pst.setString(5, account.getRole());
             pst.executeUpdate();
 
         } catch (Exception ex) {

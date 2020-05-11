@@ -224,18 +224,19 @@ public class Login extends javax.swing.JFrame {
                 rs = pst.executeQuery();
                 if (rs.next()) {
                     Detail detail = new Detail(rs.getString("Username").trim(), rs.getString("FullName").trim());
-                    if (rs.getString("Username").trim().toString().equals("Admin")) {
-                        HomeAdmin home = new HomeAdmin(detail);
+                    System.out.println(rs.getString("Role"));
+                    if (rs.getString("Role").trim().equals("Manager")) {
+                        HomeManager homeManager = new HomeManager(detail);
                         this.setVisible(false);
-                        home.setVisible(true);
-                    } else if (rs.getString("Username").trim().toString().equals("Manager")) {
-                        HomeManager home = new HomeManager(detail);
+                        homeManager.setVisible(true);
+                    } else if (rs.getString("Role").equals("Admin")) {
+                        HomeAdmin homeAdmin = new HomeAdmin(detail);
                         this.setVisible(false);
-                        home.setVisible(true);
+                        homeAdmin.setVisible(true);
                     } else {
-                        HomeUser home = new HomeUser(detail);
+                        HomeUser homeUser = new HomeUser(detail);
                         this.setVisible(false);
-                        home.setVisible(true);
+                        homeUser.setVisible(true);
                     }
                 } else {
                     lblStatus.setText("Bạn đã nhập sai tên đăng nhập hoặc mật khẩu!");

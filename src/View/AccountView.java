@@ -30,8 +30,8 @@ public class AccountView extends javax.swing.JFrame {
     private AccountService accountService;
 
     private void loadRole() {
-        cbxRole.addItem("Khách hàng");
-        cbxRole.addItem("Người bán");
+        cbxRole.addItem("Bán hàng");
+        cbxRole.addItem("Manager");
     }
 
     public AccountView(Detail d) {
@@ -82,6 +82,7 @@ public class AccountView extends javax.swing.JFrame {
                 vector.add(repeat("*", length));
                 vector.add(b.getFullname());
                 vector.add(new SimpleDateFormat("dd/MM/yyyy").format(b.getDateCreated()));
+                vector.add(b.getRole());
                 dtm.addRow(vector);
             });
             TableAccount.setModel(dtm);
@@ -132,6 +133,8 @@ public class AccountView extends javax.swing.JFrame {
             newAccount.setPassword(this.pass.getText());
             newAccount.setFullname(this.cbxEmployees.getSelectedItem().toString());
             newAccount.setDateCreated(new java.sql.Date(date.getDate().getTime()));
+            newAccount.setRole(this.cbxRole.getSelectedItem().toString());
+
             accountService.addAccount(newAccount);
             loadData();
             setDisabledData();
@@ -151,6 +154,7 @@ public class AccountView extends javax.swing.JFrame {
             newAccount.setPassword(this.pass.getText());
             newAccount.setFullname(this.cbxEmployees.getSelectedItem().toString());
             newAccount.setDateCreated(new java.sql.Date(date.getDate().getTime()));
+            newAccount.setRole(this.cbxRole.getSelectedItem().toString());
             accountService.editAccout(oldUsername, newAccount);
             setDisabledData();
             refreshData();
@@ -456,6 +460,7 @@ public class AccountView extends javax.swing.JFrame {
         pass.setText(model.getValueAt(selectedRow, 1).toString());
         cbxEmployees.addItem(model.getValueAt(selectedRow, 2).toString());
         ((JTextField) date.getDateEditor().getUiComponent()).setText(model.getValueAt(selectedRow, 3).toString());
+        cbxRole.setSelectedItem(model.getValueAt(selectedRow, 4).toString());
 
         btnDelete.setEnabled(true);
         btnChange.setEnabled(true);

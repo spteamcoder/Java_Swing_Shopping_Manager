@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 public class ConnectDB {
 
     public Connection getConnect() {
-        String dbURL = "jdbc:sqlserver://localhost:1433;database=ShoppingManager";
+        String dbURL = "jdbc:sqlserver://localhost:1433;database=Managerment";
         String username = "sa";
         String password = "123456";
         Connection conn = null;
