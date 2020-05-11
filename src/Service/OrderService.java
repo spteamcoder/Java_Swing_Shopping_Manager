@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package Service.Impl;
+package Service;
 
 import Model.Order;
 import java.util.List;
@@ -14,6 +13,9 @@ import java.util.List;
  * @author VLT
  */
 public interface OrderService {
-        List<Order> getListOrder();
+
+    List<Order> getListOrder();
+
+    boolean findOrderById(String id);
 
 }

@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Service;
+package Service.Impl;
 
 import ConfigDB.ConnectDB;
 import Model.Order;
 import Model.Order;
-import Service.Impl.OrderService;
+import Service.OrderService;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,15 +23,15 @@ import java.util.List;
  * @author VLT
  */
 public class OrderServiceImpl implements OrderService {
-    
+
     private static List<Order> list;
     private ConnectDB cmdb = new ConnectDB();
-    
+
     @Override
     public List<Order> getListOrder() {
         list = new ArrayList<>();
         Connection connection = cmdb.getConnect();
-        
+
         String query = "SELECT * FROM Orders";
         ResultSet result = null;
         Statement statement = null;
@@ -49,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
                 String intoMoney = result.getString(9);
                 Date date = result.getDate(10);
                 String methods = result.getString(11);
-                
+
                 list.add(new Order(id, customerName, address, phone, product, amount, price, period, intoMoney, date, methods));
             }
         } catch (SQLException ex) {
@@ -77,4 +78,44 @@ public class OrderServiceImpl implements OrderService {
         return list;
     }
     
+    @Override
+    public boolean findOrderById(String id) {
+        boolean kq = true;
+        PreparedStatement pst = null;
+        Connection conn = cmdb.getConnect();
+        ResultSet rs = null;
+        String sqlCheck = "SELECT * FROM Orders";
+        try {
+            pst = conn.prepareStatement(sqlCheck);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                if (id.equals(rs.getString("ID").toString().trim())) {
+                    return false;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
+        return kq;
+    }
+
 }

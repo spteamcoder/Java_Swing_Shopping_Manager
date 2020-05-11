@@ -3,8 +3,8 @@ package View;
 import ConfigDB.ConnectDB;
 import Model.Order;
 import Model.Position;
-import Service.Impl.OrderService;
-import Service.OrderServiceImpl;
+import Service.OrderService;
+import Service.Impl.OrderServiceImpl;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -207,23 +207,6 @@ public class OrderForm extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
-    }
-
-    public boolean findOrderById() {
-        boolean kq = true;
-        String sqlCheck = "SELECT * FROM Orders";
-        try {
-            pst = conn.prepareStatement(sqlCheck);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                if (this.txbID.getText().equals(rs.getString("ID").toString().trim())) {
-                    return false;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return kq;
     }
 
     public boolean checkNull() {
@@ -906,7 +889,8 @@ public class OrderForm extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (isAdd == true) {
-            if (findOrderById()) {
+            String id = this.txbID.getText();
+            if (orderService.findOrderById(id)) {
                 addOrder();
             } else {
                 lblStatus.setText("Không thể thêm đơn đặt hàng vì mã đơn đặt hàng bạn nhập đã tồn tại");
