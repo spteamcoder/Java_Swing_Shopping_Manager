@@ -252,7 +252,7 @@ FROM
 				</textField>
 				<staticText>
 					<reportElement x="0" y="3" width="648" height="20" forecolor="#FFFFFF" uuid="b03d29fe-8de9-4754-8c9f-440caae4c7e3"/>
-					<text><![CDATA[đường 3/2, P. Xuân Khánh, Q. Ninh Kiều, TP. Cần Thơ. Điện thoại: 01684342451; Email: dts1@gmail.com.vn]]></text>
+					<text><![CDATA[Km9 Nguyễn Trãi Thanh Xuân Hà Nội. Điện thoại: 0389680779; Email: dts1@gmail.com.vn]]></text>
 				</staticText>
 			</frame>
 		</band>

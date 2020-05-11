@@ -44,12 +44,12 @@ FROM
 			<staticText>
 				<reportElement x="0" y="20" width="260" height="20" uuid="c65a086e-0f93-4595-adff-cdd893c91d4e"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[đường 3/2, P. Xuân Khánh, Q. Ninh Kiều, TP. Cần Thơ]]></text>
+				<text><![CDATA[Km9 Nguyễn Trãi Thanh Xuân Hà Nội]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="41" width="260" height="20" uuid="445c3f5c-126a-4ba3-834c-7d82039a8473"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Điện thoại: 01684342451; Email: dts1@gmail.com.vn]]></text>
+				<text><![CDATA[Điện thoại: 0389680779 Email: dts1@gmail.com.vn]]></text>
 			</staticText>
 		</band>
 	</title>

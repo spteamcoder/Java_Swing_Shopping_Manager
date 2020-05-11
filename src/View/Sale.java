@@ -1041,7 +1041,7 @@ class Sale extends javax.swing.JFrame implements Runnable {
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
 
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\D.Thanh Trung\\Documents\\NetBeansProjects\\Quan Ly Cua Hang Mua Ban Thiet Bi Dien Tu\\src\\UserInterFace\\Bill.jrxml");
+            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\Bill.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 

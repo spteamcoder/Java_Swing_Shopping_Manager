@@ -245,7 +245,7 @@ FROM
 				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#000000" uuid="d124aa0e-5e45-424c-a216-49a3992f44bb"/>
 				<staticText>
 					<reportElement x="0" y="5" width="648" height="20" forecolor="#FFFFFF" uuid="35f9733f-fde1-4303-bc14-67f6e51629bd"/>
-					<text><![CDATA[đường 3/2, P. Xuân Khánh, Q. Ninh Kiều, TP. Cần Thơ. Điện thoại: 01684342451; Email: dts1@gmail.com.vn]]></text>
+					<text><![CDATA[Km9 Nguyễn Trãi Thanh Xuân Hà Nội. Điện thoại: 0389680779; Email: dts1@gmail.com.vn]]></text>
 				</staticText>
 			</frame>
 			<textField>

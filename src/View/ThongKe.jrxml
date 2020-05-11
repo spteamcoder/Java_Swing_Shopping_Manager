@@ -259,7 +259,7 @@ FROM
 					<textElement>
 						<font size="8"/>
 					</textElement>
-					<text><![CDATA[đường 3/2, P. Xuân Khánh, Q. Ninh Kiều, TP. Cần Thơ. Điện thoại: 01684342451; Email: dts1@gmail.com.vn]]></text>
+					<text><![CDATA[Km9 Nguyễn Trãi Thanh Xuân Hà Nội - Điện Thoại : 0389680779. Điện thoại: 01684342451; Email: dts1@gmail.com.vn]]></text>
 				</staticText>
 				<textField>
 					<reportElement x="439" y="4" width="76" height="20" forecolor="#FFFFFF" uuid="ddefceaa-6ef8-4ab1-8714-705cd9a45a16"/>
