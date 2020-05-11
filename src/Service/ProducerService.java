@@ -17,5 +17,7 @@ public interface ProducerService {
     List<Producer> getListProducer();
     
     boolean findProducerById(String id);
+    
+    void addProducer(Producer producer);
 
 }

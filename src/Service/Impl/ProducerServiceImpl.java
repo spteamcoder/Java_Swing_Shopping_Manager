@@ -111,4 +111,36 @@ public class ProducerServiceImpl implements ProducerService {
         return kq;
     }
 
+    @Override
+    public void addProducer(Producer producer) {
+        Connection conn = cmdb.getConnect();
+        PreparedStatement pst = null;
+        String sqlInsert = "INSERT INTO Producer (ID,ProducerName,Address,Phone,Email) VALUES(?,?,?,?,?)";
+        try {
+            pst = conn.prepareStatement(sqlInsert);
+            pst.setString(1, producer.getId());
+            pst.setString(2, producer.getName());
+            pst.setString(3, producer.getAddress());
+            pst.setString(4, producer.getPhone());
+            pst.setString(5, producer.getEmail());
+            pst.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException ignore) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ignore) {
+                }
+            }
+        }
+
+    }
+
 }
