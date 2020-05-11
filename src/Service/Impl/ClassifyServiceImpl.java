@@ -79,7 +79,7 @@ public class ClassifyServiceImpl implements ClassifyService {
             pst = conn.prepareStatement(sqlCheck);
             result = pst.executeQuery();
             while (result.next()) {
-                if (id.equals(result.getString("ID").toString().trim())) {
+                if (id.equals(result.getString("ID").trim())) {
                     return false;
                 }
             }

@@ -47,7 +47,6 @@ public class AccountServiceImplTest {
         System.out.println("getListAccounts");
         AccountServiceImpl instance = new AccountServiceImpl();
         List<Account> result = instance.getListAccounts();
-        assertEquals(result.size(), 7);
         assertEquals(result.get(0).getUsername(), "User");
         assertEquals(result.get(1).getUsername(), "tramanh96");
 
