@@ -147,7 +147,7 @@ public class HomeUser extends javax.swing.JFrame implements Runnable {
 
         lblRun.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         lblRun.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRun.setText("Cửa hàng Điện Tử Số 1: đường 3/2, P. Xuân Khánh, Q. Ninh Kiều, TP. Cần Thơ. Điện thoại: 01684342451; Email: dts1@gmail.com.vn");
+        lblRun.setText("Cửa hàng Điện Tử Số 1: Km9 Nguyễn Trãi Thanh Xuân Hà Nội - Điện Thoại : 0389680779");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

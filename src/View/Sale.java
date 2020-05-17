@@ -1,6 +1,7 @@
 package View;
 
 import ConfigDB.ConnectDB;
+import static ConfigDB.ConnectDB.LOCAL_DIRECTORY;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -1041,7 +1042,7 @@ class Sale extends javax.swing.JFrame implements Runnable {
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
 
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\Bill.jrxml");
+            JasperReport report = JasperCompileManager.compileReport(LOCAL_DIRECTORY + "Bill.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 

@@ -1,6 +1,7 @@
 package View;
 
 import ConfigDB.ConnectDB;
+import static ConfigDB.ConnectDB.LOCAL_DIRECTORY;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -872,7 +873,7 @@ public class Product extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\D.Thanh Trung\\Documents\\NetBeansProjects\\Quan Ly Cua Hang Mua Ban Thiet Bi Dien Tu\\src\\UserInterFace\\Menu.jrxml");
+            JasperReport report = JasperCompileManager.compileReport(LOCAL_DIRECTORY + "Menu.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 

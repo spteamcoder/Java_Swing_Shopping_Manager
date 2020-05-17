@@ -1,10 +1,11 @@
 package View;
 
 import ConfigDB.ConnectDB;
+import static ConfigDB.ConnectDB.LOCAL_DIRECTORY;
 import Model.Order;
 import Model.Position;
-import Service.OrderService;
 import Service.Impl.OrderServiceImpl;
+import Service.OrderService;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -918,7 +919,7 @@ public class OrderForm extends javax.swing.JFrame {
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\Orders.jrxml");
+            JasperReport report = JasperCompileManager.compileReport(LOCAL_DIRECTORY + "Orders.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 

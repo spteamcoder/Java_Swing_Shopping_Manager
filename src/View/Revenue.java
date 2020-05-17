@@ -1,6 +1,7 @@
 package View;
 
 import ConfigDB.ConnectDB;
+import static ConfigDB.ConnectDB.LOCAL_DIRECTORY;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -365,7 +366,7 @@ public class Revenue extends javax.swing.JFrame {
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\ThongKe.jrxml");
+            JasperReport report = JasperCompileManager.compileReport(LOCAL_DIRECTORY + "ThongKe.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 

@@ -29,5 +29,7 @@ public class ConnectDB {
         }
         return conn;
     }
+    
+    public static final String LOCAL_DIRECTORY = "C:\\Users\\VLT\\Desktop\\SQA\\ShoppingManager\\src\\View\\";
 
 }

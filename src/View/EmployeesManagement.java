@@ -1,6 +1,7 @@
 package View;
 
 import ConfigDB.ConnectDB;
+import static ConfigDB.ConnectDB.LOCAL_DIRECTORY;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.Date;
@@ -856,7 +857,7 @@ public class EmployeesManagement extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            JasperReport report = JasperCompileManager.compileReport("C:\\Users\\D.Thanh Trung\\Documents\\NetBeansProjects\\Quan Ly Cua Hang Mua Ban Thiet Bi Dien Tu\\src\\UserInterFace\\Empployees.jrxml");
+            JasperReport report = JasperCompileManager.compileReport(LOCAL_DIRECTORY + "Empployees.jrxml");
 
             JasperPrint print = JasperFillManager.fillReport(report, null, conn);
 
